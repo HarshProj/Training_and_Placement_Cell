@@ -1,4 +1,4 @@
-import { CaretDown } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, List } from "@phosphor-icons/react/dist/ssr";
 import React from 'react'
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
@@ -8,13 +8,16 @@ export const Navbar = () => {
     <div className='w-full h-[4.5rem]  flex fixed backdrop-blur-sm z-20 shadow-2xl '>
         <div className="w-[4rem]"></div>
         <div className="relative h-full w-full flex justify-between">
-            <div className="gap-6  flex items-center">
+            <div className="gap-6  flex items-center ">
 
         <Image className=" h-12 w-16 bg-cover" src={logo} alt="KNIT logo"  ></Image>
         <div className=" h-full w-80  flex items-center "><p className="font-">Training & Placement Office
         Kamla Nehru Institute of Technology,Sultanpur</p></div>
             </div>
-            <ul className='flex  mr-[4rem] items-center'>
+            <div className="md:hidden h-full flex items-center">
+            <List size={40}  />
+            </div>
+            <ul className='flex  mr-[4rem] items-center max-md:hidden'>
             
                 <li className='hovermenu h-full flex items-center relative '>
                     <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Home<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>

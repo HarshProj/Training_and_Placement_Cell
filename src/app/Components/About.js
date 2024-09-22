@@ -1,10 +1,12 @@
 import React from 'react'
 import Image from 'next/image';
-import logo from '../Assets/R.K.Upadhyay.png';
+import RK from '../Assets/R.K.Upadhyay.png';
+import DL from '../Assets/D.L.Gupta.png';
+import { GithubLogo, InstagramLogo, LinkedinLogo } from '@phosphor-icons/react/dist/ssr';
 export const About = () => {
   return (
     <div className="min-h-[100vh] max-h-full pt-12 ">
-        <div className="  w-full  pt-4 relative">
+        <div className="  w-full  pt-4 relative ">
             <div className="w-full bg-orange-300 flex justify-center   h-[130px]">
                 <div className=" bg-white w-[400px] h-[160px] py-1 px-5 shadow-lg rounded-md top-0 absolute">
                     <h4 className='text-xl'>Brochure</h4>
@@ -26,17 +28,31 @@ We extend a cordial invitation to you to participate in Campus Placement Drive f
             
             {/* </div> */}
         </div>
-    <div className="flex justify-center items-center h-[600px]">
+    <div className="flex justify-center items-center min-h-[600px] max-md:flex-wrap gap-10">
             <div className="shadow-lg w-[280px] h-[400px] flex flex-col items-center ">
                 <div className="h-[70%] w-full flex justify-center items-center">
                     <div className="border rounded-full w-[80%] h-[80%]">
                     
-<Image className=" h-full w-full bg-cover rounded-full" src={logo} alt="KNIT logo"  ></Image>
+<Image className=" h-full w-full bg-cover rounded-full" src={RK} alt="KNIT logo"  ></Image>
                     </div>
                 </div>
                 <div className="">
                     <h2 className='text-2xl font-bold text-center'>Prof. R.K.Upadhyay</h2>
                     <p className='text-gray-400 text-xl text-center'>Director</p>
+                </div>
+
+            </div>
+            <div className="shadow-lg w-[280px] h-[400px] flex flex-col items-center ">
+                <div className="h-[70%] w-full flex justify-center items-center">
+                    <div className="border rounded-full w-[80%] h-[80%]">
+                    
+<Image className=" h-full w-full bg-cover rounded-full" src={DL} alt="KNIT logo"  ></Image>
+                    </div>
+                </div>
+                <div className="">
+                    <h2 className='text-2xl font-bold text-center'>Prof. D.L.Gupta</h2>
+                    <p className='text-gray-400 text-xl text-center'>Professor In Charge
+                    Career Development Cell</p>
                 </div>
 
             </div>
@@ -49,16 +65,22 @@ We extend a cordial invitation to you to participate in Campus Placement Drive f
             </div>
 
             <hr />
-            <div className="h-[400px] w-full flex items-center justify-center">
-                <div className=" grid grid-cols-5 w-[90%] h-[280px] ">
-                    <div className="col-span-2 flex flex-col gap-4">
+            <div className="min-h-[400px] w-full  flex items-center justify-center">
+                <div className=" grid grid-cols-5 w-[90%] max-md:w-[80%] min-h-[280px] max-md:grid-cols-1 max-md:gap-10">
+                    <div className="col-span-2 max-md:col-span-1 flex flex-col gap-4">
                         <h3 className='text-3xl font-bold '>TPO KNIT</h3>
                         <div className="flex flex-col gap-1">
 
                         <p className='text-gray-400 cursor-pointer hover:underline'> Kamla Nehru Institute of Technology,Sultanpur </p>
                         <p className='text-gray-400 cursor-pointer hover:underline'> <b>Phone: </b>+91 123456789</p>
                         <p className='text-gray-400 cursor-pointer hover:underline'> <b>Phone: </b>+91 123456789</p>
-                        <p className='text-gray-400  '> <b>Handles: </b>X Y Z</p>
+                        <div className="flex text-gray-400 gap-1 ">
+                        <b>Handles: </b>
+                        <a href=""><LinkedinLogo size={30} weight="fill"  /></a>
+                        <a href=""><InstagramLogo size={30} weight="fill"  /></a>
+                        <a href=""><GithubLogo size={30} weight="fill"  /> </a>
+                         
+                        </div>
                         </div>
                         <p className='cursor-pointer rounded-3xl bg-gray-300 py-1 px-2 pl-4 w-[200px]'><b>Email:</b>xyz@gmail.com</p>
                     </div>
