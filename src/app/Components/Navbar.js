@@ -1,9 +1,11 @@
-import { CaretDown, List } from "@phosphor-icons/react/dist/ssr";
-import React from 'react'
+'use client';
+import { CaretDown, List, X } from "@phosphor-icons/react/dist/ssr";
+import React, { useState } from 'react'
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
 import '../CSS/navbar.css'
 export const Navbar = () => {
+    const [toggle,setToggle]=useState(false); 
   return (
     <div className='w-full h-[4.5rem]  flex fixed backdrop-blur-sm z-20 shadow-2xl '>
         <div className="w-[4rem]"></div>
@@ -14,8 +16,9 @@ export const Navbar = () => {
         <div className=" h-full w-80  flex items-center "><p className="font-">Training & Placement Office
         Kamla Nehru Institute of Technology,Sultanpur</p></div>
             </div>
-            <div className="md:hidden h-full flex items-center">
-            <List size={40}  />
+            <div className="md:hidden h-full flex items-center" onClick={()=>{setToggle(!toggle)}}>
+   
+            {toggle?<X size={40} weight="thin" />:<List size={40} weight="thin" />}
             </div>
             <ul className='flex  mr-[4rem] items-center max-md:hidden'>
             
