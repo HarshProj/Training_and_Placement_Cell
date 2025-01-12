@@ -1,6 +1,7 @@
 'use client';
 import { CaretDown, List, X } from "@phosphor-icons/react/dist/ssr";
 import React, { useState } from 'react'
+import Link from 'next/link'; // Import Link from Next.js
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
 import '../CSS/navbar.css'
@@ -73,7 +74,7 @@ export const Navbar = () => {
                     <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Training & placement office team<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
                     </div>
                     <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Contact Us</li>
+                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600"><Link href="/contact-us">Contact Us</Link></li>
                         <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Placement Team</li>
                         <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Carrer Guidance Cell</li>
                         <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Members</li>
