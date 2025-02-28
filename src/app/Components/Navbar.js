@@ -5,8 +5,10 @@ import Link from 'next/link'; // Import Link from Next.js
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
 import '../CSS/navbar.css'
+import { useRouter } from "next/navigation";
 export const Navbar = () => {
     const [toggle,setToggle]=useState(false); 
+    const router = useRouter();
   return (
     <div className='w-full h-[4.5rem]  flex fixed backdrop-blur-sm z-20 shadow-2xl '>
         <div className="w-[4rem]"></div>
@@ -58,7 +60,7 @@ export const Navbar = () => {
                         <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Why Recruiter?</li>
                         <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Brochure</li>
                         <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Placement Procedure</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Past Recruiters</li>
+                        <li onClick={() => router.push("/past_recruiters")} className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Past Recruiters</li>
                     </ul>
                 </li>
                 <li className='hovermenu h-full flex items-center relative '>

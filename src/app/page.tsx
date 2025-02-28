@@ -4,6 +4,7 @@ import Image from 'next/image';
 import {About} from './Components/About'
 import logo from './Assets/logo.png';
 import knit from './Assets/knit.jpeg';
+
 export default function Home() {
   return (
     <>
