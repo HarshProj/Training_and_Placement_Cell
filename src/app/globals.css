@@ -10,3 +10,11 @@
 *{
   font-family: sans-serif;
 }
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+}
