@@ -1,98 +1,81 @@
 'use client';
-import { CaretDown, List, X } from "@phosphor-icons/react/dist/ssr";
-import React, { useState } from 'react'
-import Link from 'next/link'; // Import Link from Next.js
+import { CaretDown, List, X } from "@phosphor-icons/react";
+import React, { useState } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
-import '../CSS/navbar.css'
-import { useRouter } from "next/navigation";
-export const Navbar = () => {
-    const [toggle,setToggle]=useState(false); 
-    const router = useRouter();
-  return (
-    <div className='w-full h-[4.5rem]  flex fixed backdrop-blur-sm z-20 shadow-2xl '>
-        <div className="w-[4rem]"></div>
-        <div className="relative h-full w-full flex justify-between">
-            <div className="gap-6  flex items-center ">
+import '../CSS/navbar.css';
 
-        <Image className=" h-12 w-16 bg-cover" src={logo} alt="KNIT logo"  ></Image>
-        <div className=" h-full w-80  flex items-center "><p className="font-">Training & Placement Office
-        Kamla Nehru Institute of Technology,Sultanpur</p></div>
+export const Navbar = () => {
+    const [toggle, setToggle] = useState(false);
+    
+    const menuItems = [
+        { label: "Home", subMenu: [{ label: "About Us", link: "/" }] },
+        { label: "Academics", subMenu: [{ label: "Programmes", link: "/" }, { label: "Course Highlights", link: "/" }, { label: "Grade System", link: "/" }, { label: "Admission Procedure", link: "/" }] },
+        { label: "Students", subMenu: [{ label: "Student Corner", link: "/" }, { label: "Achievement", link: "/" }, { label: "Registration Procedure", link: "/" }, { label: "Career Development", link: "/" }, { label: "Activity", link: "/" }] },
+        { label: "Recruiter", subMenu: [{ label: "Why Recruiter?", link: "/" }, { label: "Brochure", link: "/" }, { label: "Placement Procedure", link: "/" }, { label: "Past Recruiters", link: "/past_recruiters" }] },
+        { label: "Forms", subMenu: [{ label: "JAF", link: "/" }, { label: "IAF", link: "/" }, { label: "Industry Day", link: "/" }] },
+        { label: "Training & Placement Team", subMenu: [{ label: "Contact Us", link: "/contact-us" }, { label: "Placement Team", link: "/" }, { label: "Career Guidance Cell", link: "/" }, { label: "Members", link: "/" }] },
+        { label: "Login", subMenu: [{ label: "Recruiter Login", link: "/" }, { label: "Student Login", link: "/" }] },
+    ];
+
+    return (
+        <nav className="w-full h-[4.5rem] max-xl:bg-white  fixed backdrop-blur-sm z-20 shadow-lg flex items-center px-6 ">
+            {/* Logo and Toggle Button */}
+            <div className="flex items-center w-full">
+                <Image className="h-12 w-16" src={logo} alt="KNIT logo" />
+                <p className="ml-4 font-semibold">
+                    Training & Placement Office, Kamla Nehru Institute of Technology
+                </p>
+
+                {/* Mobile Menu Button */}
+                <button
+                    onClick={() => setToggle(!toggle)}
+                    className="ml-auto block xl:hidden p-2"
+                >
+                    {toggle ? <X size={30} /> : <List size={30} />}
+                </button>
             </div>
-            <div className="md:hidden h-full flex items-center" onClick={()=>{setToggle(!toggle)}}>
-   
-            {toggle?<X size={40} weight="thin" />:<List size={40} weight="thin" />}
-            </div>
-            <ul className='flex  mr-[4rem] items-center max-md:hidden'>
-            
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Home<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">About Us</li>
-                    </ul>
-                </li>
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Academics<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Programmes</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Course Highlights</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Grade System</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Addmission Procedure</li>
-                    </ul>
-                </li>
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Students<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Student Corner</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Acheivement</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Registration Procedure</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Career Development</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Activity</li>
-                    </ul>
-                </li>
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Recruiter<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Why Recruiter?</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Brochure</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Placement Procedure</li>
-                        <li onClick={() => router.push("/past_recruiters")} className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Past Recruiters</li>
-                    </ul>
-                </li>
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Forms<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">JAF</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">IAF</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Industry Day</li>
-                    </ul>
-                </li>
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Training & placement office team<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600"><Link href="/contact-us">Contact Us</Link></li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Placement Team</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Carrer Guidance Cell</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Members</li>
-                    </ul>
-                </li>
-                <li className='hovermenu h-full flex items-center relative '>
-                    <div className="flex px-3 cursor-pointer py-[5px] rounded   items-center  hover:bg-white hover:transition-all duration-300">Login<CaretDown style={{marginTop:"3px", marginLeft:"3px"}}size={17}/>
-                    </div>
-                    <ul className="absolute  w-[200px]  subhovermenu bg-white top-[4.5rem] left-0">
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Recruiter Login</li>
-                        <li className="w-full h-[45px]  pl-3 pt-2 hover:bg-slate-300 hover:text-blue-600">Student Login</li>
-                    </ul>
-                </li>
-         
+
+            {/* Desktop Navigation */}
+            <ul className="hidden xl:flex ml-auto space-x-6">
+                {menuItems.map((menu, index) => (
+                    <li key={index} className="relative group">
+                        <div className="flex items-center cursor-pointer hover:bg-gray-200 px-3 py-2 rounded-md">
+                            {menu.label} <CaretDown size={17} className="ml-1 mt-1" />
+                        </div>
+                        <ul className="absolute hidden group-hover:block bg-white shadow-md w-[200px] rounded-md top-full left-0 transition-all duration-200">
+                            {menu.subMenu.map((subItem, subIndex) => (
+                                <li key={subIndex} className="hover:bg-gray-300 p-2">
+                                    <Link href={subItem.link} className="block">{subItem.label}</Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </li>
+                ))}
             </ul>
-        </div>
-        </div>
-  )
-}
+
+            {/* Mobile Navigation */}
+            {toggle && (
+                <ul className="xl:hidden absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center space-y-2 py-4">
+                    {menuItems.map((menu, index) => (
+                        <li key={index} className="w-full text-center">
+                            <details className="w-full">
+                                <summary className="flex justify-center items-center cursor-pointer p-3 hover:bg-gray-200">
+                                    {menu.label} <CaretDown size={17} className="ml-1 mt-1" />
+                                </summary>
+                                <ul className="bg-gray-100">
+                                    {menu.subMenu.map((subItem, subIndex) => (
+                                        <li key={subIndex} className="hover:bg-gray-300 p-2">
+                                            <Link href={subItem.link} className="block">{subItem.label}</Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </details>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </nav>
+    );
+};

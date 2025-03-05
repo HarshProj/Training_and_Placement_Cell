@@ -18,7 +18,10 @@
     "next": "14.2.8",
     "phosphor-icons": "^1.4.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-fast-marquee": "^1.6.5",
+    "react-responsive-carousel": "^3.2.23",
+    "swiper": "^11.2.5"
   },
   "devDependencies": {
     "@types/node": "^20",

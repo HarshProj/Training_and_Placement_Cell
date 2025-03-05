@@ -3,16 +3,18 @@ import Image from 'next/image';
 import RK from '../Assets/R.K.Upadhyay.png';
 import DL from '../Assets/D.L.Gupta.png';
 import {ContactUs} from "./ContactUs.js"
+
+import Marquee from "react-fast-marquee";
 export const About = () => {
   return (
     <div className="min-h-[100vh] max-h-full pt-12 ">
         <div className="  w-full  pt-4 relative ">
             <div className="w-full bg-orange-300 flex justify-center   h-[130px]">
                 <div className=" bg-white w-[400px] h-[160px] py-1 px-5 shadow-lg rounded-md top-0 absolute">
-                    <h4 className='text-xl'>Brochure</h4>
+                    <h4 className='text-xl'> Brochure</h4>
                     <p>Training and Placement</p>
                     <p className='text-gray-400'>2024-2025</p>
-                <div className="cursor-pointer hover:text-blue-400 inline bottom-12 absolute">Open</div>
+                <div className="cursor-pointer hover:text-blue-400 inline bottom-12 absolute"> <a href="/Placement-Brochure.pdf" target="_blank" rel="noopener noreferrer">Open</a></div>
                 </div>
             </div>
         </div>
@@ -42,7 +44,7 @@ We extend a cordial invitation to you to participate in Campus Placement Drive f
                 </div>
 
             </div>
-            <div className="shadow-lg w-[280px] h-[400px] flex flex-col items-center ">
+            {/* <div className="shadow-lg w-[280px] h-[400px] mt-10 flex flex-col items-center ">
                 <div className="h-[70%] w-full flex justify-center items-center">
                     <div className="border rounded-full w-[80%] h-[80%]">
                     
@@ -55,13 +57,48 @@ We extend a cordial invitation to you to participate in Campus Placement Drive f
                     Career Development Cell</p>
                 </div>
 
-            </div>
+            </div> */}
     </div>
             <div className="w-full  flex flex-col gap-5 items-center mt-10 mb-8">
             <div className="mb-2"><h1 className='text-3xl font-bold'>Past Recruiters</h1>
+            
             </div>
-            <div className='w-[60%] h-[1px] bg-black '/>
-            <div className="w-[80%] h-[200px] border"></div>
+            <div className='w-[60%] h-[1px] bg-black '>
+
+            </div>
+
+            <div className="w-[80%] h-[200px] border">
+            <Marquee className='w-full h-full'>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/tcs.jpg" className="w-32 h-32 object-contain" alt="TCS" />
+      <p className="text-center">TCS</p>
+    </div>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/ittiam.jpg" className="w-32 h-32 object-contain" alt="Ittiam" />
+      <p className="text-center">Ittiam</p>
+    </div>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/adrosonic.png" className="w-32 h-32 object-contain" alt="Adrosonic" />
+      <p className="text-center">Adrosonic</p>
+    </div>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/prolift.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+      <p className="text-center">Prolift</p>
+    </div>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/altdigital.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+      <p className="text-center">Altdigital</p>
+    </div>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/express.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+      <p className="text-center">American Express</p>
+    </div>
+    <div className="flex flex-col items-center p-5 mx-5">
+      <img src="/logos/academor.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+      <p className="text-center">Academor</p>
+    </div>
+  </Marquee>
+            </div>
             </div>
 
             <hr />
