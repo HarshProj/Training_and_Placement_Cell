@@ -17,7 +17,7 @@ export const About = () => {
                 </div>
             </div>
         </div>
-        <div className="w-full  flex flex-col gap-5 items-center mt-20">
+<div className="w-full flex flex-col gap-5 items-center mt-20">
             <div className="mb-5"><h1 className='text-5xl font-bold'>About Us</h1>
             </div>
             <div className='w-[60%] h-[1px] bg-black '/>
@@ -29,78 +29,76 @@ We extend a cordial invitation to you to participate in Campus Placement Drive f
             
             {/* </div> */}
         </div>
-    <div className="flex justify-center items-center min-h-[600px] max-md:flex-wrap gap-10">
-            <div className="shadow-lg w-[280px] h-[400px] flex flex-col items-center ">
-                <div className="h-[70%] w-full flex justify-center items-center">
-                    <div className="border rounded-full w-[80%] h-[80%]">
-                    
-<Image className=" h-full w-full bg-cover rounded-full" src={RK} alt="KNIT logo"  ></Image>
-                    </div>
+    {/* Changed from flex to flex-col to arrange profiles in a column */}
+    <div className="flex flex-col justify-center items-center gap-10 my-10">
+        {/* Director profile */}
+        <div className="shadow-lg w-[280px] h-[400px] flex flex-col items-center">
+            <div className="h-[70%] w-full flex justify-center items-center">
+                <div className="border rounded-full w-[80%] h-[80%]">
+                    <Image className="h-full w-full bg-cover rounded-full" src={RK} alt="Director" />
                 </div>
-                <div className="">
-                    <h2 className='text-2xl font-bold text-center'>Prof. R.K.Upadhyay</h2>
-                    <p className='text-gray-400 text-xl text-center'>Director</p>
+            </div>
+            <div className="">
+                <h2 className='text-2xl font-bold text-center'>Prof. R.K.Upadhyay</h2>
+                <p className='text-gray-400 text-xl text-center'>Director</p>
+            </div>
+        </div>
+        
+        {/* Professor In-Charge profile - removed the mt-10 class as it's not needed in column layout */}
+        <div className="shadow-lg w-[280px] h-[400px] flex flex-col items-center">
+            <div className="h-[70%] w-full flex justify-center items-center">
+                <div className="border rounded-full w-[80%] h-[80%]">
+                    <Image className="h-full w-full bg-cover rounded-full" src={DL} alt="Professor In-Charge" />
                 </div>
-
             </div>
-            {/* <div className="shadow-lg w-[280px] h-[400px] mt-10 flex flex-col items-center ">
-                <div className="h-[70%] w-full flex justify-center items-center">
-                    <div className="border rounded-full w-[80%] h-[80%]">
-                    
-<Image className=" h-full w-full bg-cover rounded-full" src={DL} alt="KNIT logo"  ></Image>
-                    </div>
-                </div>
-                <div className="">
-                    <h2 className='text-2xl font-bold text-center'>Prof. D.L.Gupta</h2>
-                    <p className='text-gray-400 text-xl text-center'>Professor In Charge
-                    Career Development Cell</p>
-                </div>
-
-            </div> */}
-    </div>
-            <div className="w-full  flex flex-col gap-5 items-center mt-10 mb-8">
-            <div className="mb-2"><h1 className='text-3xl font-bold'>Past Recruiters</h1>
-            
+            <div className="">
+                <h2 className='text-2xl font-bold text-center'>Prof. D.L.Gupta</h2>
+                <p className='text-gray-400 text-xl text-center'>Professor In-Charge
+                (Career Development Cell)</p>
             </div>
-            <div className='w-[60%] h-[1px] bg-black '>
+        </div>
+    </div>
 
-            </div>
+    <div className="w-full flex flex-col gap-5 items-center mt-10 mb-8">
+        <div className="mb-2"><h1 className='text-3xl font-bold'>Past Recruiters</h1>
+        </div>
+        <div className='w-[60%] h-[1px] bg-black '></div>
 
-            <div className="w-[80%] h-[200px] border">
-            <Marquee className='w-full h-full'>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/tcs.jpg" className="w-32 h-32 object-contain" alt="TCS" />
-      <p className="text-center">TCS</p>
-    </div>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/ittiam.jpg" className="w-32 h-32 object-contain" alt="Ittiam" />
-      <p className="text-center">Ittiam</p>
-    </div>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/adrosonic.png" className="w-32 h-32 object-contain" alt="Adrosonic" />
-      <p className="text-center">Adrosonic</p>
-    </div>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/prolift.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
-      <p className="text-center">Prolift</p>
-    </div>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/altdigital.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
-      <p className="text-center">Altdigital</p>
-    </div>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/express.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
-      <p className="text-center">American Express</p>
-    </div>
-    <div className="flex flex-col items-center p-5 mx-5">
-      <img src="/logos/academor.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
-      <p className="text-center">Academor</p>
-    </div>
-  </Marquee>
+        <div className="w-[80%] h-[200px] border">
+        <Marquee className='w-full h-full'>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/tcs.jpg" className="w-32 h-32 object-contain" alt="TCS" />
+                <p className="text-center">TCS</p>
             </div>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/ittiam.jpg" className="w-32 h-32 object-contain" alt="Ittiam" />
+                <p className="text-center">Ittiam</p>
             </div>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/adrosonic.png" className="w-32 h-32 object-contain" alt="Adrosonic" />
+                <p className="text-center">Adrosonic</p>
+            </div>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/prolift.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+                <p className="text-center">Prolift</p>
+            </div>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/altdigital.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+                <p className="text-center">Altdigital</p>
+            </div>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/express.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+                <p className="text-center">American Express</p>
+            </div>
+            <div className="flex flex-col items-center p-5 mx-5">
+                <img src="/logos/academor.jpg" className="w-32 h-32 object-contain" alt="Adrosonic" />
+                <p className="text-center">Academor</p>
+            </div>
+        </Marquee>
+        </div>
+    </div>
 
-            <hr />
+    <hr />
     </div>
   )
 }

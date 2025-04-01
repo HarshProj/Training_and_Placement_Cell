@@ -27,7 +27,7 @@ export const Navbar = () => {
     const menuItems = [
         { label: "Home", subMenu: [{ label: "Home", link: "/" },{ label: "About Us", link: "/about-us" }] },
         { label: "Academics", subMenu: [{ label: "Programmes", link: "/" }, { label: "Course Highlights", link: "/" }, { label: "Grade System", link: "/" }, { label: "Admission Procedure", link: "/" }] },
-        { label: "Students", subMenu: [{ label: "Student Corner", link: "/" }, { label: "Achievement", link: "/" }, { label: "Registration Procedure", link: "/" }, { label: "Career Development", link: "/" }, { label: "Activity", link: "/" }] },
+        { label: "Students", subMenu: [{ label: "Student Corner", link: "/" }, { label: "Achievement", link: "/" }, { label: "Registration Procedure and Code of Conduct", link: "/CodeOfConduct" }, { label: "Career Development", link: "/" }, { label: "Activity", link: "/" }] },
         { label: "Recruiter", subMenu: [{ label: "Why Recruiter?", link: "/" }, { label: "Brochure", link: "/" }, { label: "Placement Procedure", link: "/" }, { label: "Past Recruiters", link: "/past_recruiters" }] },
         { label: "Forms", subMenu: [{ label: "JAF", link: "/" }, { label: "IAF", link: "/" }, { label: "Industry Day", link: "/" }] },
         { label: "Training & Placement Team", subMenu: [{ label: "Contact Us", link: "/contact-us" }, { label: "Placement Team", link: "/" }, { label: "Career Guidance Cell", link: "/" }, { label: "Members", link: "/" }] },
