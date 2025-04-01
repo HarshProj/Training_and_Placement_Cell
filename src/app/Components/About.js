@@ -2,7 +2,6 @@ import React from 'react'
 import Image from 'next/image';
 import RK from '../Assets/R.K.Upadhyay.png';
 import DL from '../Assets/D.L.Gupta.png';
-import {ContactUs} from "./ContactUs.js"
 
 import Marquee from "react-fast-marquee";
 export const About = () => {
@@ -102,7 +101,6 @@ We extend a cordial invitation to you to participate in Campus Placement Drive f
             </div>
 
             <hr />
-           <ContactUs/>
     </div>
   )
 }
