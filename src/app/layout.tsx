@@ -18,6 +18,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Training & Placement Cell - KNIT",
   description: "by Abhishek Sharma",
+  icons: {
+    icon: '/logo/logo.png', // or whichever logo you prefer
+  },
 };
 
 export default function RootLayout({
