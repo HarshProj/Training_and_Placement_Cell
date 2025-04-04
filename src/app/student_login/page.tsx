@@ -11,7 +11,7 @@ export default function StudentAuth() {
   const [isSignup, setIsSignup] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (isSignup) {
