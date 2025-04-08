@@ -7,7 +7,7 @@ const connecttodb=()=>{
     // mongoose.connection
     // .once("open",()=>{console.log("Connected to db")})
     mongoose
-    .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(uri)
     .then(() => {
         console.log("Connected to db");
     })
