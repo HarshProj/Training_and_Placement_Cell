@@ -31,7 +31,7 @@ export const Navbar = () => {
         { label: "Recruiter", subMenu: [{ label: "Why Recruiter?", link: "/" }, { label: "Brochure", link: "/" }, { label: "Placement Procedure", link: "/" }, { label: "Past Recruiters", link: "/past_recruiters" },{ label: "Recruiter Feedback", link: "/recruiters_feedback" }] },
         { label: "Forms", subMenu: [{ label: "JAF", link: "/" }, { label: "IAF", link: "/" }, { label: "Industry Day", link: "/" }] },
         { label: "Training & Placement Team", subMenu: [{ label: "Contact Us", link: "/contact-us" }, { label: "Placement Team", link: "/" }, { label: "Career Guidance Cell", link: "/" }, { label: "Members", link: "/" }] },
-        { label: "Login", subMenu: [{ label: "Recruiter Login", link: "/recruiter_login" }, { label: "Student Login", link: "/student_login" }] },
+        { label: "Login", subMenu: [{ label: "Admin Login", link: "/recruiter_login" }, { label: "Student Login", link: "/student_login" }] },
     ];
 
     const toggleDropdown = (index) => {
