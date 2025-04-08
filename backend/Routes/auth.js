@@ -1,7 +1,7 @@
 require('dotenv').config()
-const express=require('express')
-const router=express.Router()
-const Admin=require('../Model/admin')
+const express=require('express');
+const router=express.Router();
+const Admin=require('../Model/admin');
 const jwt=require('jsonwebtoken');
 const hash=process.env.hash
 const bcrypt=require('bcryptjs');
