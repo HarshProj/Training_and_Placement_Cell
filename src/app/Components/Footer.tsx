@@ -5,7 +5,7 @@ import {
   LinkedinLogo,
 } from "@phosphor-icons/react/dist/ssr";
 
-export const Footer = () => {
+export const Footer: React.FC = () => {
   return (
     <div className="min-h-[400px] w-full flex flex-col items-center justify-center">
       <div className="grid grid-cols-5 w-[90%] max-md:w-[80%] min-h-[280px] max-md:grid-cols-1 max-md:gap-10">
@@ -21,15 +21,15 @@ export const Footer = () => {
             <p className="text-gray-400 cursor-pointer hover:underline">
               <b>Phone: </b>+91 9415156184
             </p>
-            <div className="flex text-gray-400 gap-3">
+            <div className="flex text-gray-400 gap-3 items-center">
               <b>Handles: </b>
-              <a href="">
+              <a href="#" aria-label="LinkedIn">
                 <LinkedinLogo size={30} weight="fill" />
               </a>
-              <a href="">
+              <a href="#" aria-label="Instagram">
                 <InstagramLogo size={30} weight="fill" />
               </a>
-              <a href="">
+              <a href="#" aria-label="GitHub">
                 <GithubLogo size={30} weight="fill" />
               </a>
             </div>
@@ -44,6 +44,7 @@ export const Footer = () => {
           <a
             href="https://www.knit.ac.in/"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 block"
           >
             JAF
@@ -51,6 +52,7 @@ export const Footer = () => {
           <a
             href="https://www.knit.ac.in/"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 block"
           >
             IAF
@@ -58,6 +60,7 @@ export const Footer = () => {
           <a
             href="https://www.knit.ac.in/"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 block"
           >
             Brochure
@@ -79,20 +82,17 @@ export const Footer = () => {
 
         <div className="flex flex-col gap-3">
           <h3>External Links</h3>
-          <p className="text-gray-400 cursor-pointer hover:underline">
           <a
-                  href="https://www.knit.ac.in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 block"
-                >
-                  KNIT Sultanpur
-                </a>
-          </p>
+            href="https://www.knit.ac.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 block"
+          >
+            KNIT Sultanpur
+          </a>
         </div>
       </div>
 
-      {/* Footer Credits with Black Background */}
       <div className="w-full bg-black text-center py-3 mt-6 text-white">
         <p>Designed & Maintained by Training & Placement Cell, KNIT Sultanpur</p>
         <p>© CDC, KNIT 2025</p>
