@@ -21,13 +21,6 @@ export const Navbar: React.FC = () => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
-  const [token, setToken] = useState<boolean>(false);
-
-  useEffect(() => {
-    const authToken = localStorage.getItem('authtoken');
-    setToken(!authToken);  // token = true means not logged in
-    console.log(!authToken);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,16 +92,10 @@ export const Navbar: React.FC = () => {
     },
     {
       label: "Login",
-      val:token,
+      val:false,
       subMenu: [
         { label: "Recruiter Login", link: "/recruiter_login" },
         { label: "Student Login", link: "/student_login" }
-      ]
-    },
-    {
-      label: "Logout",
-      val:!token,
-      subMenu: [
       ]
     }
   ];
@@ -141,7 +128,7 @@ export const Navbar: React.FC = () => {
 
           <div className="hidden xl:flex items-center space-x-1">
             {menuItems.map((menu, index) => 
-             !menu.val?'':(<div key={index} className="relative group">
+              menu.val?'':(<div key={index} className="relative group">
                 <button
                   className="px-3 py-2 rounded-md text-gray-700 font-medium group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-200 flex items-center"
                 >
