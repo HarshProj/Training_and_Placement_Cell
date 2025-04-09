@@ -3,11 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import ChatbotWidget from '../Components/ChatbotWidget';
 
 const AdminPage = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'add' | 'list' | 'orders'>('add');
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
   const router = useRouter();
 
   const availableRoles = [
@@ -215,13 +218,15 @@ const AdminPage = () => {
       {/* Chatbot Floating Icon */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition duration-300 ease-in-out"
-          title="Chat with us"
-          onClick={() => alert('Chatbot coming soon!')}
+          onClick={() => setIsChatbotOpen(prev => !prev)}
+          className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition"
+          title="Chat with Placement Bot"
         >
           💬
         </button>
       </div>
+      {/* Chatbot Widget */}
+      <ChatbotWidget isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
     </div>
   );
 };
