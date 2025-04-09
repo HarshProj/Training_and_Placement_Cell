@@ -5,8 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
-import { usePathname } from 'next/navigation'; // import the hook
-
+import { usePathname, useRouter } from 'next/navigation';
 
 interface SubMenuItem {
   label: string;
@@ -24,16 +23,15 @@ export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
-  const pathname = usePathname(); // get the current path
-
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedToken = sessionStorage.getItem('authtoken');
       setAuthToken(storedToken);
-      console.log(!storedToken); // true means not logged in
     }
-  }, [authToken , pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +41,12 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authtoken');
+    setAuthToken(null);
+    router.push('/');
+  };
 
   const menuItems: MenuItem[] = [
     {
@@ -145,30 +149,41 @@ export const Navbar: React.FC = () => {
           </div>
 
           <div className="hidden xl:flex items-center space-x-1">
-            {menuItems.map((menu, index) => 
+            {menuItems.map((menu, index) =>
               menu.val && (
                 <div key={index} className="relative group">
-                  <button
-                    className="px-3 py-2 rounded-md text-gray-700 font-medium group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-200 flex items-center"
-                  >
-                    {menu.label}
-                    <CaretDown size={16} className="ml-1 group-hover:rotate-180 transition-transform duration-200" />
-                  </button>
+                  {menu.label === "Logout" ? (
+                    <button
+                      onClick={handleLogout}
+                      className="px-3 py-2 rounded-md text-gray-700 font-medium hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        className="px-3 py-2 rounded-md text-gray-700 font-medium group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-200 flex items-center"
+                      >
+                        {menu.label}
+                        <CaretDown size={16} className="ml-1 group-hover:rotate-180 transition-transform duration-200" />
+                      </button>
 
-                  {menu.subMenu.length > 0 && (
-                    <div className="absolute left-0 w-56 mt-1 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
-                      <div className="py-1">
-                        {menu.subMenu.map((subItem, subIndex) => (
-                          <Link
-                            href={subItem.link}
-                            key={subIndex}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                          >
-                            {subItem.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
+                      {menu.subMenu.length > 0 && (
+                        <div className="absolute left-0 w-56 mt-1 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
+                          <div className="py-1">
+                            {menu.subMenu.map((subItem, subIndex) => (
+                              <Link
+                                href={subItem.link}
+                                key={subIndex}
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                              >
+                                {subItem.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               )
@@ -188,18 +203,27 @@ export const Navbar: React.FC = () => {
 
       <div className={`xl:hidden ${toggle ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden transition-all duration-300 bg-white shadow-lg`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {menuItems.map((menu, index) => (
+          {menuItems.map((menu, index) =>
             menu.val && (
               <div key={index} className="relative">
                 <button
-                  onClick={() => toggleDropdown(index)}
+                  onClick={() => {
+                    if (menu.label === 'Logout') {
+                      handleLogout();
+                      setToggle(false);
+                    } else {
+                      toggleDropdown(index);
+                    }
+                  }}
                   className="w-full flex justify-between items-center px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-600"
                 >
                   <span>{menu.label}</span>
-                  <CaretDown
-                    size={16}
-                    className={`transition-transform duration-200 ${activeDropdown === index ? 'rotate-180' : ''}`}
-                  />
+                  {menu.label !== "Logout" && (
+                    <CaretDown
+                      size={16}
+                      className={`transition-transform duration-200 ${activeDropdown === index ? 'rotate-180' : ''}`}
+                    />
+                  )}
                 </button>
 
                 {menu.subMenu.length > 0 && (
@@ -218,7 +242,7 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
             )
-          ))}
+          )}
         </div>
       </div>
     </nav>
