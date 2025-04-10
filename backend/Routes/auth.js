@@ -14,41 +14,6 @@ const hash = process.env.hash;
 const admin_username = process.env.admin_username;
 const admin_password = process.env.admin_password;
 
-// Signup Route
-router.post("/adminsignup", async (req, res) => {
-  try {
-    const { email, password, firstname, lastname } = req.body;
-
-    const user = await Admin.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: "User Already Registered" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const data = await Admin.create({
-      email,
-      password: hashedPassword,
-      firstname,
-      lastname,
-    });
-
-    const payload = {
-      user: { id: data.id },
-    };
-
-    const authtoken = jwt.sign(payload, hash, { expiresIn: "1d" });
-
-    res.status(200).json({ msg: "Signup successful", authtoken });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: error.message || "Internal Server Error" });
-  }
-});
-
 // Login Route
 router.post("/adminlogin", async (req, res) => {
   try {
