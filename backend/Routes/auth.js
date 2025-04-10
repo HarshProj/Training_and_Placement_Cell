@@ -14,41 +14,6 @@ const hash = process.env.hash;
 const admin_username = process.env.admin_username;
 const admin_password = process.env.admin_password;
 
-// Signup Route
-router.post("/adminsignup", async (req, res) => {
-  try {
-    const { email, password, firstname, lastname } = req.body;
-
-    const user = await Admin.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: "User Already Registered" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const data = await Admin.create({
-      email,
-      password: hashedPassword,
-      firstname,
-      lastname,
-    });
-
-    const payload = {
-      user: { id: data.id },
-    };
-
-    const authtoken = jwt.sign(payload, hash, { expiresIn: "1d" });
-
-    res.status(200).json({ msg: "Signup successful", authtoken });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: error.message || "Internal Server Error" });
-  }
-});
-
 // Login Route
 router.post("/adminlogin", async (req, res) => {
   try {
@@ -87,6 +52,43 @@ router.get("/verifyadmin", verifyAdmin, (req, res) => {
     user: req.admin,
   });
 });
+router.get("/user-type", (req, res) => {
+  // cosnole.log(req.admin);
+  try {
+    
+   const token = req.header("Authtoken");
+       // Verify token
+       if(!token){
+        return res.status(200).json({
+          success: false,
+          message: "Welcome,To KNIT CDC Site",
+        }); 
+       }
+       const decoded = jwt.verify(token, hash);
+   
+       const { id: email, password } = decoded.user;
+   
+       if (email === admin_username && password === admin_password) {
+         // Pass user info to next middleware or route
+         return res.status(200).json({
+          success: true,
+          message: "Welcome Admin!",
+        });
+       } else {
+         return res.status(200).json({
+           success: false,
+           message: "Welcome,To KNIT CDC Site",
+         });
+       }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: error.message || "Internal Server Error" });
+  
+  }
+});
+
 
 
 

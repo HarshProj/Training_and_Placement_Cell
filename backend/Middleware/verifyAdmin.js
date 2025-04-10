@@ -1,13 +1,10 @@
-
 const jwt = require("jsonwebtoken");
 const admin_username = process.env.ADMIN_USERNAME;
 const admin_password = process.env.ADMIN_PASSWORD;
 const hash = process.env.hash || "defaultSecret"; // make sure this exists
-console.log(admin_password,hash)
 const verifyAdmin = async (req, res, next) => {
   try {
     const token = req.header("Authtoken");
-    console.log(token)
     if (!token) {
       return res
         .status(401)

@@ -63,8 +63,7 @@ export const Navbar: React.FC = () => {
       subMenu: [
         { label: "Programmes", link: "/" },
         { label: "Course Highlights", link: "/" },
-        { label: "Grade System", link: "/" },
-        { label: "Admission Procedure", link: "/" }
+        { label: "Grade System", link: "/" }
       ]
     },
     {
@@ -82,10 +81,10 @@ export const Navbar: React.FC = () => {
       label: "Recruiter",
       val: true,
       subMenu: [
-        { label: "Why Recruiter?", link: "/" },
         { label: "Brochure", link: "/" },
         { label: "Placement Procedure", link: "/" },
-        { label: "Past Recruiters", link: "/past_recruiters" }
+        { label: "Past Recruiters", link: "/past_recruiters" },
+        { label: "Recruiter Feedback", link: "/recruiters_feedback" }
       ]
     },
     {
@@ -116,9 +115,10 @@ export const Navbar: React.FC = () => {
       ]
     },
     {
-      label: "Logout",
+      label: "More",
       val: !!authToken,
-      subMenu: [],
+      subMenu: [{ label: "Logout", link: "/" },
+        { label: "Dashboard", link: "/admin" }],
     }
   ];
 
@@ -152,14 +152,7 @@ export const Navbar: React.FC = () => {
             {menuItems.map((menu, index) =>
               menu.val && (
                 <div key={index} className="relative group">
-                  {menu.label === "Logout" ? (
-                    <button
-                      onClick={handleLogout}
-                      className="px-3 py-2 rounded-md text-gray-700 font-medium hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
-                    >
-                      Logout
-                    </button>
-                  ) : (
+                   
                     <>
                       <button
                         className="px-3 py-2 rounded-md text-gray-700 font-medium group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-200 flex items-center"
@@ -171,7 +164,14 @@ export const Navbar: React.FC = () => {
                       {menu.subMenu.length > 0 && (
                         <div className="absolute left-0 w-56 mt-1 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
                           <div className="py-1">
-                            {menu.subMenu.map((subItem, subIndex) => (
+                            {menu.subMenu.map((subItem, subIndex) => 
+                            (subItem.label=="Logout"?  <button
+                              onClick={handleLogout}
+                              type="button"
+                              className="w-full px-4 py-2 text-sm text-start text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                            >
+                              Logout
+                            </button>:
                               <Link
                                 href={subItem.link}
                                 key={subIndex}
@@ -179,12 +179,13 @@ export const Navbar: React.FC = () => {
                               >
                                 {subItem.label}
                               </Link>
-                            ))}
+                            )
+                            )}
                           </div>
                         </div>
                       )}
                     </>
-                  )}
+                  
                 </div>
               )
             )}
