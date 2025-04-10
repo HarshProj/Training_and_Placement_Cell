@@ -11,7 +11,8 @@ export default function StudentAuth() {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const router = useRouter();
-  const [isLoading,setisLoading]=useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
   // Step 1: Generate OTP
   const handleSendOtp = async () => {
     if (!email.endsWith('@knit.ac.in')) {
@@ -20,7 +21,7 @@ export default function StudentAuth() {
     }
   
     try {
-      setisLoading(true);
+      setIsLoading(true);
   
       // Step 1: Generate OTP
       const otpRes = await axios.get(`http://localhost:5000/api/auth/generateotp?email=${email}`);
@@ -51,7 +52,7 @@ export default function StudentAuth() {
       alert('Error sending OTP. Try again.');
     }
   
-    setisLoading(false);
+    setIsLoading(false);
   };
   
 
@@ -87,7 +88,8 @@ export default function StudentAuth() {
       console.log(res);
       if (res.data.success) {
         sessionStorage.setItem('authtoken', res.data.authtoken);
-        router.push('/');
+        // Redirect to student dashboard instead of home
+        router.push('/student_dashboard');
       } else {
         alert('Login failed.');
       }

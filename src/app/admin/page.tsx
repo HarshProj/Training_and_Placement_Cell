@@ -5,11 +5,36 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import ChatbotWidget from '../Components/ChatbotWidget';
 
+// Define types for our data
+interface Update {
+  _id: string;
+  title: string;
+  description: string;
+  eligibleBranches: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface UpdateFormData {
+  title: string;
+  description: string;
+}
+
 const AdminPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'add' | 'list' | 'orders'>('add');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useState<'add' | 'list' | 'orders' | 'updates'>('add');
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState<boolean>(false);
+  
+  // Updates state
+  const [updates, setUpdates] = useState<Update[]>([]);
+  const [updateFormData, setUpdateFormData] = useState<UpdateFormData>({
+    title: '',
+    description: ''
+  });
+  const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
+  const [editingUpdateId, setEditingUpdateId] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -26,6 +51,16 @@ const AdminPage = () => {
     'Others'
   ];
 
+  const availableBranches = [
+    'Computer Science And Engineering',
+    'Electrical Engineering',
+    'Mechanical Engineering',
+    'Electronics Engineering',
+    'Information Technology',
+    'Civil Engineering',
+    'MCA'
+  ];
+
   const logout = () => {
     sessionStorage.removeItem('authtoken');
     router.push('/recruiter_login');
@@ -37,6 +72,126 @@ const AdminPage = () => {
         ? prev.filter((r) => r !== role)
         : [...prev, role]
     );
+  };
+
+  const handleBranchChange = (branch: string) => {
+    setSelectedBranches((prev) =>
+      prev.includes(branch)
+        ? prev.filter((b) => b !== branch)
+        : [...prev, branch]
+    );
+  };
+
+  // Handle input change for update form
+  const handleUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setUpdateFormData({
+      ...updateFormData,
+      [name]: value
+    });
+  };
+
+  // Fetch all updates
+  const fetchUpdates = async () => {
+    try {
+      const token = sessionStorage.getItem('authtoken');
+      const response = await axios.get('http://localhost:5000/api/v1/updates', {
+        headers: {
+          Authtoken: token
+        }
+      });
+      
+      if (response.data.success) {
+        setUpdates(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching updates:', error);
+    }
+  };
+
+  // Submit update form
+  const handleUpdateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = sessionStorage.getItem('authtoken');
+    
+    try {
+      const updateData = {
+        ...updateFormData,
+        eligibleBranches: selectedBranches
+      };
+      
+      if (isEditing && editingUpdateId) {
+        // Update existing update
+        await axios.put(
+          `http://localhost:5000/api/v1/updates/${editingUpdateId}`,
+          updateData,
+          {
+            headers: {
+              Authtoken: token
+            }
+          }
+        );
+      } else {
+        // Create new update
+        await axios.post(
+          'http://localhost:5000/api/v1/updates/create',
+          updateData,
+          {
+            headers: {
+              Authtoken: token
+            }
+          }
+        );
+      }
+      
+      // Reset form and refresh updates
+      resetUpdateForm();
+      fetchUpdates();
+    } catch (error) {
+      console.error('Error submitting update:', error);
+    }
+  };
+
+  // Delete an update
+  const handleDeleteUpdate = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this update?')) {
+      try {
+        const token = sessionStorage.getItem('authtoken');
+        await axios.delete(`http://localhost:5000/api/v1/updates/${id}`, {
+          headers: {
+            Authtoken: token
+          }
+        });
+        
+        // Refresh updates
+        fetchUpdates();
+      } catch (error) {
+        console.error('Error deleting update:', error);
+      }
+    }
+  };
+
+  // Edit an update
+  const handleEditUpdate = (update: Update) => {
+    setUpdateFormData({
+      title: update.title,
+      description: update.description
+    });
+    setSelectedBranches(update.eligibleBranches);
+    setEditingUpdateId(update._id);
+    setIsEditing(true);
+    setActiveTab('updates');
+  };
+
+  // Reset update form
+  const resetUpdateForm = () => {
+    setUpdateFormData({
+      title: '',
+      description: ''
+    });
+    setSelectedBranches([]);
+    setEditingUpdateId(null);
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -56,6 +211,8 @@ const AdminPage = () => {
 
         if (res.data.success) {
           setLoading(false);
+          // Fetch updates after successful verification
+          fetchUpdates();
         } else {
           router.push('/recruiter_login');
         }
@@ -104,6 +261,16 @@ const AdminPage = () => {
             }`}
           >
             ✅ Upcoming Drives
+          </button>
+          <button
+            onClick={() => setActiveTab('updates')}
+            className={`w-full text-left px-4 py-2 border rounded transition ${
+              activeTab === 'updates'
+                ? 'bg-blue-100 border-blue-500 text-blue-800'
+                : 'hover:bg-gray-100 border-gray-300'
+            }`}
+          >
+            📢 Manage Updates
           </button>
           <button
             onClick={logout}
@@ -210,8 +377,154 @@ const AdminPage = () => {
         {activeTab === 'list' && (
           <div className="text-xl text-gray-700">📦 Visited Companies section here...</div>
         )}
+        
         {activeTab === 'orders' && (
           <div className="text-xl text-gray-700">🧾 Upcoming Drives section here...</div>
+        )}
+        
+        {activeTab === 'updates' && (
+          <div>
+            <h2 className="text-2xl font-semibold mb-6 text-blue-700">
+              {isEditing ? '✏️ Edit Update' : '📢 Add New Update'}
+            </h2>
+            
+            {/* Update Form */}
+            <form onSubmit={handleUpdateSubmit} className="mb-10">
+              {/* Title */}
+              <div className="mb-4">
+                <label className="block font-medium mb-1">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={updateFormData.title}
+                  onChange={handleUpdateInputChange}
+                  placeholder="e.g. Campus Drive Announcement"
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </div>
+              
+              {/* Description */}
+              <div className="mb-4">
+                <label className="block font-medium mb-1">Description</label>
+                <textarea
+                  name="description"
+                  value={updateFormData.description}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Detailed information about the update"
+                  className="w-full border p-2 rounded h-28"
+                  required
+                />
+              </div>
+              
+              {/* Eligible Branches */}
+              <div className="mb-6">
+                <label className="block font-medium mb-2 text-gray-700">Eligible Branches</label>
+                
+                {/* Selected Branches Display */}
+                {selectedBranches.length > 0 ? (
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {selectedBranches.map((branch) => (
+                      <span
+                        key={branch}
+                        className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium"
+                      >
+                        {branch}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500 mb-4">No branches selected</p>
+                )}
+                
+                {/* Checkboxes */}
+                <div className="grid grid-cols-2 gap-3">
+                  {availableBranches.map((branch) => (
+                    <label key={branch} className="inline-flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        value={branch}
+                        checked={selectedBranches.includes(branch)}
+                        onChange={() => handleBranchChange(branch)}
+                        className="accent-green-600 w-4 h-4"
+                      />
+                      <span className="text-gray-700">{branch}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex space-x-3">
+                <button 
+                  type="submit" 
+                  className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                >
+                  {isEditing ? 'Update' : 'Add'}
+                </button>
+                
+                {isEditing && (
+                  <button 
+                    type="button" 
+                    onClick={resetUpdateForm}
+                    className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </form>
+            
+            {/* Updates List */}
+            <h3 className="text-xl font-semibold mb-4 text-blue-700 border-t pt-6">Current Updates</h3>
+            
+            {updates.length > 0 ? (
+              <div className="space-y-4">
+                {updates.map((update) => (
+                  <div key={update._id} className="border rounded-lg p-4 bg-white shadow-sm">
+                    <div className="flex justify-between">
+                      <h4 className="font-semibold text-lg">{update.title}</h4>
+                      <div className="space-x-2">
+                        <button 
+                          onClick={() => handleEditUpdate(update)}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          ✏️ Edit
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteUpdate(update._id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <p className="my-2 text-gray-600">{update.description}</p>
+                    
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500 mb-1">Eligible Branches:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {update.eligibleBranches.map((branch) => (
+                          <span 
+                            key={branch} 
+                            className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs"
+                          >
+                            {branch}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 text-xs text-gray-400">
+                      Last updated: {new Date(update.updatedAt).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No updates found. Add your first update above.</p>
+            )}
+          </div>
         )}
       </div>
 

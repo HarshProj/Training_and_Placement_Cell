@@ -12,6 +12,7 @@ app.get('/',(req,res)=>{
 app.use('/api/auth',require("./Routes/auth"));
 app.use('/api/v1/recruiter',require("./Routes/recruiter"));
 app.use('/api/gemini' , require('./Routes/chatbot'));
+app.use('/api/v1/updates',require("./Routes/updateRoutes"));
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
 });
