@@ -1,7 +1,7 @@
+// app/page.tsx or app/someRoute/page.tsx
+
 import React from 'react'
 
-export const page = () => {
-  return (
-    <div>page</div>
-  )
+export default function Page() {
+  return( <div>page</div>)
 }
