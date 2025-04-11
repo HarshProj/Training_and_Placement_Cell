@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState , useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import ChatbotWidget from '../Components/ChatbotWidget';
 import VisitedCompany from '../Components/VisitedCompany';
-
 
 // Define types for our data
 interface Update {
@@ -22,13 +21,28 @@ interface UpdateFormData {
   description: string;
 }
 
-const AdminPage = () => {
+// New interface for recruiter feedback
+interface RecruiterFeedback {
+  _id: string;
+  name: string;
+  organization: string;
+  phone: string;
+  rating: number;
+  feedback: string;
+  createdAt: string;
+  __v: number;
+}
 
+const AdminPage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'add' | 'list' | 'orders' | 'updates'>('add');
+  const [activeTab, setActiveTab] = useState<'add' | 'list' | 'orders' | 'updates' | 'feedback'>('add');
   const [isChatbotOpen, setIsChatbotOpen] = useState<boolean>(false);
+  
+  // New state for recruiter feedback
+  const [recruiterFeedback, setRecruiterFeedback] = useState<RecruiterFeedback[]>([]);
+  const [feedbackLoading, setFeedbackLoading] = useState<boolean>(false);
 
   //add company
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
@@ -78,16 +92,12 @@ const AdminPage = () => {
         alert(response.data.message);
       }
       
-      
     } catch (error) {
       console.error(error);
       alert("Error uploading data");
     }
   };
 
-
-
-  
   // Updates state
   const [updates, setUpdates] = useState<Update[]>([]);
   const [updateFormData, setUpdateFormData] = useState<UpdateFormData>({
@@ -126,6 +136,27 @@ const AdminPage = () => {
   const logout = () => {
     sessionStorage.removeItem('authtoken');
     router.push('/recruiter_login');
+  };
+
+  // Function to fetch recruiter feedback
+  const fetchRecruiterFeedback = async () => {
+    setFeedbackLoading(true);
+    try {
+      const token = sessionStorage.getItem('authtoken');
+      const response = await axios.get('http://localhost:5000/api/v1/recruiter/feedback', {
+        headers: {
+          Authtoken: token
+        }
+      });
+      
+      if (response.data.success) {
+        setRecruiterFeedback(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching recruiter feedback:', error);
+    } finally {
+      setFeedbackLoading(false);
+    }
   };
 
   const handleBranchChange = (branch: string) => {
@@ -279,7 +310,19 @@ const AdminPage = () => {
     verify();
   }, [router]);
 
+  // Load feedback data when the feedback tab is selected
+  useEffect(() => {
+    if (activeTab === 'feedback') {
+      fetchRecruiterFeedback();
+    }
+  }, [activeTab]);
+
   if (loading) return <div className="p-4 text-center pt-16">Loading admin data...</div>;
+
+  // Function to render stars based on rating
+  const renderStars = (rating: number) => {
+    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  };
 
   return (
     <div className="flex h-screen pt-16 bg-gray-50 text-gray-800">
@@ -306,7 +349,7 @@ const AdminPage = () => {
           >
             ✅ Visited Companies
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab('orders')}
             className={`w-full text-left px-4 py-2 border rounded transition ${
               activeTab === 'orders'
@@ -315,7 +358,7 @@ const AdminPage = () => {
             }`}
           >
             ✅ Upcoming Drives
-          </button>
+          </button> */}
           <button
             onClick={() => setActiveTab('updates')}
             className={`w-full text-left px-4 py-2 border rounded transition ${
@@ -325,6 +368,17 @@ const AdminPage = () => {
             }`}
           >
             📢 Manage Updates
+          </button>
+          {/* New Feedback Button */}
+          <button
+            onClick={() => setActiveTab('feedback')}
+            className={`w-full text-left px-4 py-2 border rounded transition ${
+              activeTab === 'feedback'
+                ? 'bg-blue-100 border-blue-500 text-blue-800'
+                : 'hover:bg-gray-100 border-gray-300'
+            }`}
+          >
+            📝 Recruiter Feedback
           </button>
           <button
             onClick={logout}
@@ -434,10 +488,9 @@ const AdminPage = () => {
               </button>
             </div>
           )
-      }
+        }
 
         {activeTab === 'list' && (
-          // <div className="text-xl text-gray-700">📦 Visited Companies section here...</div>
           <VisitedCompany />
         )}
         
@@ -586,6 +639,46 @@ const AdminPage = () => {
               </div>
             ) : (
               <p className="text-gray-500">No updates found. Add your first update above.</p>
+            )}
+          </div>
+        )}
+
+        {/* New Recruiter Feedback Section */}
+        {activeTab === 'feedback' && (
+          <div>
+            <h2 className="text-2xl font-semibold mb-6 text-blue-700">📝 Recruiter Feedback</h2>
+            
+            {feedbackLoading ? (
+              <div className="text-center py-10">
+                <p className="text-gray-500">Loading feedback data...</p>
+              </div>
+            ) : recruiterFeedback.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {recruiterFeedback.map((feedback) => (
+                  <div key={feedback._id} className="bg-white rounded-lg shadow-md p-5 border border-gray-100">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-semibold text-lg text-gray-800">{feedback.name}</h3>
+                        <p className="text-blue-600">{feedback.organization}</p>
+                      </div>
+                      <div className="text-yellow-500 text-lg font-semibold">
+                        {renderStars(feedback.rating)}
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-600 mb-4 italic">"{feedback.feedback}"</p>
+                    
+                    <div className="flex justify-between text-sm text-gray-500 pt-2 border-t">
+                      <span>📞 {feedback.phone}</span>
+                      <span>🕒 {new Date(feedback.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10 bg-gray-50 rounded-lg">
+                <p className="text-gray-500">No feedback data available yet.</p>
+              </div>
             )}
           </div>
         )}
