@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState , useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import ChatbotWidget from '../Components/ChatbotWidget';
+import VisitedCompany from '../Components/VisitedCompany';
+
 
 // Define types for our data
 interface Update {
@@ -21,10 +23,70 @@ interface UpdateFormData {
 }
 
 const AdminPage = () => {
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'add' | 'list' | 'orders' | 'updates'>('add');
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [isChatbotOpen, setIsChatbotOpen] = useState<boolean>(false);
+
+  //add company
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const [companyName, setCompanyName] = useState('');
+  const [description, setDescription] = useState('');
+  const [ctc, setCtc] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+
+  const handleRoleChange = (role: string) => {
+    setSelectedRoles((prev) =>
+      prev.includes(role)
+        ? prev.filter((r) => r !== role)
+        : [...prev, role]
+    );
+  };
+
+  const handleaddcompany = async () => {
+    if (!companyLogo || !companyName || !description || !ctc || selectedRoles.length === 0) {
+      alert("Please fill all fields and select at least one role.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', companyLogo);
+    formData.append('name', companyName);
+    formData.append('description', description);
+    formData.append('ctc', ctc);
+    formData.append('roles_offered', JSON.stringify(selectedRoles)); // Important!
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/admin/addcompany', formData);
+      
+      if(response.data.success)
+      {
+          alert("company data added successfully");
+          // Reset form
+          setCompanyLogo(null);
+          setCompanyName('');
+          setDescription('');
+          setCtc('');
+          setSelectedRoles([]);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+      }
+      else{
+        alert(response.data.message);
+      }
+      
+      
+    } catch (error) {
+      console.error(error);
+      alert("Error uploading data");
+    }
+  };
+
+
+
   
   // Updates state
   const [updates, setUpdates] = useState<Update[]>([]);
@@ -64,14 +126,6 @@ const AdminPage = () => {
   const logout = () => {
     sessionStorage.removeItem('authtoken');
     router.push('/recruiter_login');
-  };
-
-  const handleRoleChange = (role: string) => {
-    setSelectedRoles((prev) =>
-      prev.includes(role)
-        ? prev.filter((r) => r !== role)
-        : [...prev, role]
-    );
   };
 
   const handleBranchChange = (branch: string) => {
@@ -284,98 +338,107 @@ const AdminPage = () => {
       {/* Main Content */}
       <div className="flex-1 p-10 overflow-y-auto">
         {activeTab === 'add' && (
-          <div>
-            <h2 className="text-2xl font-semibold mb-6 text-blue-700">📤 Upload Recruitment Info</h2>
+            <div>
+              <h2 className="text-2xl font-semibold mb-6 text-blue-700">📤 Upload Recruitment Info</h2>
 
-            {/* Company Logo Upload */}
-            <div className="mb-6">
-              <label className="block font-medium mb-1 text-gray-700">Company Logo</label>
-              <input
-                type="file"
-                accept="image/*"
-                className="block w-full text-sm text-gray-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-50 file:text-blue-700
-                        hover:file:bg-blue-100"
-              />
-            </div>
+              {/* Company Logo Upload */}
+              <div className="mb-6">
+                <label className="block font-medium mb-1 text-gray-700">Company Logo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={(e) => setCompanyLogo(e.target.files?.[0] || null)}
+                  className="block w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-50 file:text-blue-700
+                            hover:file:bg-blue-100"
+                />
+              </div>
 
-            {/* Company Name */}
-            <div className="mb-4">
-              <label className="block font-medium mb-1">Company Name</label>
-              <input
-                type="text"
-                placeholder="e.g. Google"
-                className="w-full border p-2 rounded"
-              />
-            </div>
+              {/* Company Name */}
+              <div className="mb-4">
+                <label className="block font-medium mb-1">Company Name</label>
+                <input
+                  type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="e.g. Google"
+                  className="w-full border p-2 rounded"
+                />
+              </div>
 
-            {/* Description */}
-            <div className="mb-4">
-              <label className="block font-medium mb-1">Description</label>
-              <textarea
-                placeholder="Brief about the company or the drive"
-                className="w-full border p-2 rounded h-28"
-              />
-            </div>
+              {/* Description */}
+              <div className="mb-4">
+                <label className="block font-medium mb-1">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Brief about the company or the drive"
+                  className="w-full border p-2 rounded h-28"
+                />
+              </div>
 
-            {/* Roles Offered (with checkboxes and display) */}
-            <div className="mb-6">
-              <label className="block font-medium mb-2 text-gray-700">Roles Offered</label>
-
-              {/* Selected Roles Display */}
-              {selectedRoles.length > 0 ? (
-                <div className="mb-4 flex flex-wrap gap-2">
-                  {selectedRoles.map((role) => (
-                    <span
-                      key={role}
-                      className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
-                    >
-                      {role}
-                    </span>
+              {/* Roles Offered */}
+              <div className="mb-6">
+                <label className="block font-medium mb-2 text-gray-700">Roles Offered</label>
+                {selectedRoles.length > 0 ? (
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {selectedRoles.map((role) => (
+                      <span
+                        key={role}
+                        className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
+                      >
+                        {role}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500 mb-4">No roles selected</p>
+                )}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {availableRoles.map((role: string) => (
+                    <label key={role} className="inline-flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        value={role}
+                        checked={selectedRoles.includes(role)}
+                        onChange={() => handleRoleChange(role)}
+                        className="accent-blue-600 w-4 h-4"
+                      />
+                      <span className="text-gray-700">{role}</span>
+                    </label>
                   ))}
                 </div>
-              ) : (
-                <p className="text-sm text-gray-500 mb-4">No roles selected</p>
-              )}
-
-              {/* Checkboxes */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {availableRoles.map((role) => (
-                  <label key={role} className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      value={role}
-                      checked={selectedRoles.includes(role)}
-                      onChange={() => handleRoleChange(role)}
-                      className="accent-blue-600 w-4 h-4"
-                    />
-                    <span className="text-gray-700">{role}</span>
-                  </label>
-                ))}
               </div>
-            </div>
 
-            {/* CTC Offered */}
-            <div className="mb-4">
-              <label className="block font-medium mb-1">CTC Offered (in LPA)</label>
-              <input
-                type="number"
-                placeholder="e.g. 12"
-                className="w-full border p-2 rounded"
-              />
-            </div>
+              {/* CTC */}
+              <div className="mb-4">
+                <label className="block font-medium mb-1">CTC Offered (in LPA)</label>
+                <input
+                  type="number"
+                  value={ctc}
+                  onChange={(e) => setCtc(e.target.value)}
+                  placeholder="e.g. 12"
+                  className="w-full border p-2 rounded"
+                />
+              </div>
 
-            <button className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-              ADD
-            </button>
-          </div>
-        )}
+              <button
+                onClick={handleaddcompany}
+                className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                ADD
+              </button>
+            </div>
+          )
+      }
 
         {activeTab === 'list' && (
-          <div className="text-xl text-gray-700">📦 Visited Companies section here...</div>
+          // <div className="text-xl text-gray-700">📦 Visited Companies section here...</div>
+          <VisitedCompany />
         )}
         
         {activeTab === 'orders' && (

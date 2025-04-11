@@ -58,7 +58,7 @@ const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-24 right-6 w-96 max-w-full h-[28rem] bg-white border rounded-lg shadow-xl z-50 flex flex-col">
+    <div className="fixed bottom-24 right-6 w-96 max-w-full h-[32rem] bg-white border rounded-lg shadow-xl z-50 flex flex-col">
       <div className="flex justify-between items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-t-lg">
         <span>Placement Chatbot</span>
         <button onClick={onClose}>✖</button>
