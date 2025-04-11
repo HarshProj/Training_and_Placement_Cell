@@ -66,8 +66,7 @@ router.post('/chatbot', async (req, res) => {
     const systemPrompt = `
 You are a helpful AI assistant working for a college Training & Placement Cell.
 Answer the student's or recruiter's question clearly, in detail, and professionally.
-Include relevant examples and use bullet points or numbered lists for clarity.
-Indicate whether the answer is based on HR or Alumni database information.
+always try to provide email or contact if you have.
     `;
 
     // Create RetrievalQA chains for HR and Alumni data,
