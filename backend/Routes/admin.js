@@ -1,6 +1,8 @@
 require('dotenv').config()
 const express=require('express');
 const {addCompany , getcompanies} = require('../Controllers/companyController.js');
+const verifyAdmin = require('../Middleware/verifyAdmin.js'); // Using your verifyAdmin middleware
+const {getEmployeeInfo}=require('../Controllers/employeeDetails');
 const multer = require('multer');
 
 const router=express.Router();
@@ -16,5 +18,6 @@ const upload = multer({storage:Storage})
 
 router.post("/addcompany" ,upload.single("image"),addCompany)
 router.get("/getcompanies" , getcompanies);
+router.post("/details",verifyAdmin,getEmployeeInfo);
 
 module.exports = router;
