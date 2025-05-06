@@ -85,7 +85,6 @@ export default function StudentAuth() {
         'http://localhost:5000/api/auth/login',
         { email }
       );
-      console.log(res);
       if (res.data.success) {
         sessionStorage.setItem('authtoken', res.data.authtoken);
         // Redirect to student dashboard instead of home

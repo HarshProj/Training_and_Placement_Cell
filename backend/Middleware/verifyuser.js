@@ -2,7 +2,6 @@
 const verifyuser=async(req,res,next)=>{
     try {
         const {email}=(req.method=='GET'?req.query:req.body);
-        // console.log(name)
         // let exist=await User.findOne({email:email});
         if(!email){
             return res.status(404).send({error:"User not found..."});

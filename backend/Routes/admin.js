@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express=require('express');
 const {addCompany , getcompanies} = require('../Controllers/companyController.js');
-const verifyAdmin = require('../Middleware/verifyAdmin.js'); // Using your verifyAdmin middleware
+const verifyAdmin = require('../Middleware/verifyAdmin.js'); 
 const {getEmployeeInfo}=require('../Controllers/employeeDetails');
 const multer = require('multer');
 

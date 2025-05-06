@@ -5,7 +5,7 @@ const cors=require('cors');
 const axios =require('axios');
 app.use(cors());
 require('dotenv').config()
-const port=5000;
+const port=process.env.PORT||5000;
 app.use(express.json())
 const db=require('./db');
 db();
