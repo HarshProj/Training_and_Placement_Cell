@@ -14,14 +14,10 @@ export default function RecruiterAuth() {
 
     
     try {
-      console.log(email , password)
       const res = await axios.post<{ msg: string; authtoken: string; success:boolean }>('http://localhost:5000/api/auth/adminlogin', {email , password});
-
-      console.log(res.data)
   
       if (res.data.success) {
         // alert('Login successful!');
-        // console.log(res.data.authtoken);
         sessionStorage.setItem('authtoken', res.data.authtoken);
         router.push('/admin');
       } else {

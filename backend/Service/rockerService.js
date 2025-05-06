@@ -15,15 +15,11 @@ async function searchEmployeesByCompany(companyName) {
 
     const allProfiles = response.data.profiles || [];
 
-    console.log(`All profiles fetched: ${allProfiles.length}`);
-
     const indianProfiles = allProfiles.filter(profile => {
       const country = (profile.country || '').toLowerCase().trim();
       const code = (profile.country_code || '').toUpperCase().trim();
       return country === 'india' || code === 'IN';
     });
-
-    console.log(`Filtered Indian employees: ${indianProfiles.length}`);
 
     return indianProfiles;
   } catch (error) {

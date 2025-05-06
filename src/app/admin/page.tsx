@@ -352,7 +352,6 @@ const AdminPage = () => {
         );
 
         const data = response.data;
-        console.log("Backend Response:", data);
 
         if (data && data.message === "Success") {
           const formattedEmployees = formatEmployees(data);
