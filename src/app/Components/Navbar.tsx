@@ -72,9 +72,7 @@ export const Navbar: React.FC = () => {
       label: "Academics",
       val: true,
       subMenu: [
-        { label: "Programmes", link: "https://knit.ac.in/en" },
-        { label: "Course Highlights", link: "https://knit.ac.in/en" },
-        { label: "Grade System", link: "https://knit.ac.in/en" }
+        { label: "Course Highlights", link: "/course-highlights" },
       ]
     },
     {
