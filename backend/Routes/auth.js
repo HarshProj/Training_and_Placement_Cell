@@ -1,12 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const router = express.Router();
-const Admin = require("../Model/admin");
 const jwt = require("jsonwebtoken");
 const otpGenerator=require('otp-generator');
-const bcrypt = require("bcryptjs");
 const verifyAdmin = require("../Middleware/verifyAdmin");
-const registermail = require("../Controllers/Mailer");
+const registermail = require("../Controllers/mailer");
 const verifyuser = require("../Middleware/verifyuser");
 const localvariable = require("../Middleware/localvariable");
 
@@ -52,6 +50,40 @@ router.get("/verifyadmin", verifyAdmin, (req, res) => {
     user: req.admin,
   });
 });
+router.get("/user-type", (req, res) => {
+  try {
+    
+   const token = req.header("Authtoken");
+       if(!token){
+        return res.status(200).json({
+          success: false,
+          message: "Welcome,To KNIT CDC Site",
+        }); 
+       }
+       const decoded = jwt.verify(token, hash);
+   
+       const { id: email, password } = decoded.user;
+   
+       if (email === admin_username && password === admin_password) {
+         return res.status(200).json({
+          success: true,
+          message: "Welcome Admin!",
+        });
+       } else {
+         return res.status(200).json({
+           success: false,
+           message: "Welcome,To KNIT CDC Site",
+         });
+       }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: error.message || "Internal Server Error" });
+  
+  }
+});
+
 
 
 
@@ -92,7 +124,6 @@ router.get("/generateotp",verifyuser,localvariable,async(req,res)=>{
       lowerCaseAlphabets:false,
       upperCaseAlphabets:false,
       specialChars:false})
-      // console.log(req.app.locals.OTP);
   return res.status(200).send({code:req.app.locals.OTP});
 })
 router.get("/verifyotp",verifyuser,localvariable,async(req,res)=>{
@@ -102,7 +133,6 @@ router.get("/verifyotp",verifyuser,localvariable,async(req,res)=>{
       req.app.locals.resetSession = true;
       return res.status(201).send({ msg: "Verified Successfully" });
   }
-  // console.log(req.app.locals, code);
   return res.status(400).send({ error: "Invalid OTP..." });
 })
 

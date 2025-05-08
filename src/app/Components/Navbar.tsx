@@ -1,11 +1,12 @@
 'use client';
 
-import { CaretDown, List, X } from "@phosphor-icons/react";
+import { CaretDown, List, User, UserCircle, X } from "@phosphor-icons/react";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../Assets/logo.png';
 import { usePathname, useRouter } from 'next/navigation';
+import axios from "axios";
 
 interface SubMenuItem {
   label: string;
@@ -25,10 +26,20 @@ export const Navbar: React.FC = () => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const [isAdmin,setisAdmin]=useState(false);
+  
+  const userType=async(storedToken:string|null)=>{
+    const response= await axios.get('http://localhost:5000/api/auth/user-type',{
+      headers: {
+        Authtoken: storedToken
+      }})
+      setisAdmin(response.data.success);
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedToken = sessionStorage.getItem('authtoken');
+      userType(storedToken);
       setAuthToken(storedToken);
     }
   }, [pathname]);
@@ -118,7 +129,7 @@ export const Navbar: React.FC = () => {
       label: "More",
       val: !!authToken,
       subMenu: [{ label: "Logout", link: "/" },
-        { label: "Dashboard", link: "/admin" }],
+        { label: "Dashboard", link: `${isAdmin?'/admin':'/student_dashboard'}` }],
     }
   ];
 
@@ -154,12 +165,21 @@ export const Navbar: React.FC = () => {
                 <div key={index} className="relative group">
                    
                     <>
-                      <button
-                        className="px-3 py-2 rounded-md text-gray-700 font-medium group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-200 flex items-center"
-                      >
-                        {menu.label}
-                        <CaretDown size={16} className="ml-1 group-hover:rotate-180 transition-transform duration-200" />
-                      </button>
+                    <button
+  className="px-3 py-2 rounded-md text-gray-700 font-medium group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-200 flex items-center"
+>
+  {authToken &&menu.label==='More'? (
+    <UserCircle size={32} />
+  ) : (
+    <span className="flex items-center">
+      {menu.label}
+      <CaretDown
+        size={16}
+        className="ml-1 group-hover:rotate-180 transition-transform duration-200"
+      />
+    </span>
+  )}
+</button>
 
                       {menu.subMenu.length > 0 && (
                         <div className="absolute left-0 w-56 mt-1 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">

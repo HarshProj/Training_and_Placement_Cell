@@ -12,6 +12,7 @@
     "@google/generative-ai": "^0.24.1",
     "@langchain/core": "^0.3.54",
     "@langchain/google-genai": "^0.2.6",
+    "axios": "^1.8.4",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
