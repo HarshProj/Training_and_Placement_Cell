@@ -11,13 +11,15 @@ const router = express.Router();
 const GEMINI_API_KEY = process.env.gemini_key;
 
 router.post('/chatbot', async (req, res) => {
-  // Resolve full paths to your database files
-  const dbPathHR = path.join(__dirname, 'final_hr_table.db');
-  const dbPathAL = path.join(__dirname, 'final_al_table.db');
+  const dbPathHR = path.join(__dirname, 'hr_table.db');
+  const dbPathAL = path.join(__dirname, 'al_table.db');
+  const dbPathHR2 = path.join(__dirname, 'final_hr_table.db');
+  const dbPathAL2 = path.join(__dirname, 'final_al_table.db');
 
-  // Open databases
   const dbHR = new sqlite3.Database(dbPathHR);
   const dbAL = new sqlite3.Database(dbPathAL);
+  const dbHR2 = new sqlite3.Database(dbPathHR2);
+  const dbAL2 = new sqlite3.Database(dbPathAL2);
 
   try {
     const userQuestion = req.body.question;
@@ -25,29 +27,37 @@ router.post('/chatbot', async (req, res) => {
       return res.status(400).json({ error: 'Question is required in the request body.' });
     }
 
-    // Promisify the `all` method for each DB
+    // Promisify the `all` method
     const allAsyncHR = promisify(dbHR.all).bind(dbHR);
     const allAsyncAL = promisify(dbAL.all).bind(dbAL);
+    const allAsyncHR2 = promisify(dbHR2.all).bind(dbHR2);
+    const allAsyncAL2 = promisify(dbAL2.all).bind(dbAL2);
 
-    const hrRows = await allAsyncHR('SELECT * FROM final_hr_table');
-    const alRows = await allAsyncAL('SELECT * FROM final_al_table');
+    // Fetch and flatten all rows
+    const hrRowsNested = await Promise.all([
+      allAsyncHR('SELECT * FROM hr_table'),
+      allAsyncHR2('SELECT * FROM final_hr_table')
+    ]);
+    const alRowsNested = await Promise.all([
+      allAsyncAL('SELECT * FROM al_table'),
+      allAsyncAL2('SELECT * FROM final_al_table')
+    ]);
 
-    // Convert rows to document objects with metadata
+    const hrRows = hrRowsNested.flat();
+    const alRows = alRowsNested.flat();
+
+    // Convert rows to LangChain documents
     const hrDocuments = hrRows.map(row => ({
-      pageContent: Object.entries(row)
-        .map(([k, v]) => `${k}: ${v}`)
-        .join('\n'),
-      metadata: { source: 'HR', ...row },
+      pageContent: Object.entries(row).map(([k, v]) => `${k}: ${v}`).join('\n'),
+      metadata: { source: 'HR', ...row }
     }));
 
     const alDocuments = alRows.map(row => ({
-      pageContent: Object.entries(row)
-        .map(([k, v]) => `${k}: ${v}`)
-        .join('\n'),
-      metadata: { source: 'ALUMNI', ...row },
+      pageContent: Object.entries(row).map(([k, v]) => `${k}: ${v}`).join('\n'),
+      metadata: { source: 'ALUMNI', ...row }
     }));
 
-    // Create embeddings using Gemini
+    // Generate embeddings
     const embeddings = new GoogleGenerativeAIEmbeddings({
       apiKey: GEMINI_API_KEY,
       modelName: 'embedding-001',
@@ -56,38 +66,25 @@ router.post('/chatbot', async (req, res) => {
     const hrVectorStore = await MemoryVectorStore.fromDocuments(hrDocuments, embeddings);
     const alVectorStore = await MemoryVectorStore.fromDocuments(alDocuments, embeddings);
 
-    // Initialize the Gemini model
     const model = new ChatGoogleGenerativeAI({
       apiKey: GEMINI_API_KEY,
-      model: 'gemini-1.5-pro-latest',
+      model: 'gemini-2.0-flash',
     });
 
-    // Create a prompt prefix to instruct the model for detailed, well-formatted answers.
-    const systemPrompt = `
-You are a helpful AI assistant working for a college Training & Placement Cell.
-Answer the student's or recruiter's question clearly, in detail, and professionally.
-always try to provide email or contact if you have.
-    `;
+    const systemPrompt = `answer briefly`;
 
-    // Create RetrievalQA chains for HR and Alumni data,
-    // passing the system prompt as a prompt prefix in the chain options.
     const hrChain = RetrievalQAChain.fromLLM(model, hrVectorStore.asRetriever(), {
-      llmChainOptions: {
-        promptPrefix: systemPrompt,
-      },
+      llmChainOptions: { promptPrefix: systemPrompt },
     });
 
     const alChain = RetrievalQAChain.fromLLM(model, alVectorStore.asRetriever(), {
-      llmChainOptions: {
-        promptPrefix: systemPrompt,
-      },
+      llmChainOptions: { promptPrefix: systemPrompt },
     });
 
-    // Determine which data source to query based on keywords
+    const lowerQ = userQuestion.toLowerCase();
     const hrKeywords = ['company', 'hr', 'recruiter', 'hiring', 'interview', 'recruitment'];
     const alKeywords = ['alumni', 'graduate', 'student', 'passed out', 'batch', 'working at', 'college'];
 
-    const lowerQ = userQuestion.toLowerCase();
     const isHRQuery = hrKeywords.some(k => lowerQ.includes(k));
     const isALQuery = alKeywords.some(k => lowerQ.includes(k));
 
@@ -99,11 +96,12 @@ always try to provide email or contact if you have.
       response = await alChain.call({ query: userQuestion });
       source = '🎓 Alumni Database';
     } else {
-      // If the query type is unclear, query both and combine the results.
-      const hrResponse = await hrChain.call({ query: userQuestion });
-      const alResponse = await alChain.call({ query: userQuestion });
+      const [hrResponse, alResponse] = await Promise.all([
+        hrChain.call({ query: userQuestion }),
+        alChain.call({ query: userQuestion })
+      ]);
       response = {
-        text: `🧠 HR says:\n${hrResponse.text}\n\n🎓 Alumni says:\n${alResponse.text}`,
+        text: `🧠 HR says:\n${hrResponse.text}\n\n🎓 Alumni says:\n${alResponse.text}`
       };
       source = '🔍 Both Databases';
     }
@@ -113,12 +111,15 @@ always try to provide email or contact if you have.
       source,
       answer: response.text,
     });
+
   } catch (error) {
     console.error('❌ Error in /chatbot:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   } finally {
     dbHR.close();
     dbAL.close();
+    dbHR2.close();
+    dbAL2.close();
   }
 });
 

@@ -11,7 +11,7 @@ const db=require('./db');
 db();
 app.get('/',(req,res)=>{
     res.send('Hello World');
-});
+}); 
 app.use('/api/auth',require("./Routes/auth"));
 app.use('/api/v1/recruiter',require("./Routes/recruiter"));
 app.use('/api/gemini' , require('./Routes/chatbot'));
