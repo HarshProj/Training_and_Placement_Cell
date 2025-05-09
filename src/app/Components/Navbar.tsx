@@ -86,8 +86,7 @@ export const Navbar: React.FC = () => {
         {
           label: "Registration Procedure and Code of Conduct",
           link: "/CodeOfConduct",
-        },
-        { label: "Login", link: "/student_login" },
+        }
       ],
     },
     {

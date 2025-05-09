@@ -1,6 +1,7 @@
 "use client"
 import React , {useState} from 'react'
 import axios from 'axios'
+const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const EmployeeDirectoryTab = () => {
     const [companyName, setCompanyName] = useState("");
