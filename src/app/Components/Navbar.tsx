@@ -87,26 +87,17 @@ export const Navbar: React.FC = () => {
           label: "Registration Procedure and Code of Conduct",
           link: "/CodeOfConduct",
         },
-        { label: "Activity", link: "/" },
+        { label: "Login", link: "/student_login" },
       ],
     },
     {
       label: "Recruiter",
       val: true,
       subMenu: [
-        { label: "Brochure", link: "/" },
+        { label: "Brochure", link: "/Placement-Brochure.pdf" },
         { label: "Placement Procedure", link: "/CodeOfConduct" },
         { label: "Past Recruiters", link: "/past_recruiters" },
         { label: "Recruiter Feedback", link: "/recruiters_feedback" },
-      ],
-    },
-    {
-      label: "Forms",
-      val: true,
-      subMenu: [
-        { label: "JAF", link: "/" },
-        { label: "IAF", link: "/" },
-        { label: "Industry Day", link: "/" },
       ],
     },
     {
@@ -114,7 +105,7 @@ export const Navbar: React.FC = () => {
       val: true,
       subMenu: [
         { label: "Contact Us", link: "/contact-us" },
-        { label: "Career Guidance Cell", link: "/" },
+        { label: "Photo Gallery", link: "/photo-gallery" },
         { label: "Members", link: "/placement-team" },
       ],
     },

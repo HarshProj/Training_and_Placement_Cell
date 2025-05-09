@@ -470,18 +470,18 @@ export default function ContactUs() {
                 <div className="text-blue-800 text-sm md:text-base">
                   <p className="mb-2 md:mb-3">
                     <b>Director's Office:</b><br />
-                    Phone: +91 5362-240454<br />
+                    Phone: +91 9415041790<br />
                     Email: director@knit.ac.in
                   </p>
                   <p className="mb-2 md:mb-3">
-                    <b>Registrar Office:</b><br />
-                    Phone: +91 5362-240757<br />
-                    Email: registrar@knit.ac.in
+                    <b>Training and Placement Office:</b><br />
+                    Phone: +91 9415156184<br />
+                    Email: tpo@knit.ac.in
                   </p>
                   <p>
-                    <b>For Admissions:</b><br />
-                    Phone: +91 5362-240454 (Ext. 321)<br />
-                    Email: admission@knit.ac.in
+                    <b>For 	Registrar Office</b><br />
+                    Phone: +91 9307448592<br />
+                    Email: registrar@knit.ac.in
                   </p>
                 </div>
               </motion.div>

@@ -39,7 +39,7 @@ const AboutPage = () => {
             Centre of Excellence in the field of Technical Education since 1976
           </p>
           <p className="font-serif italic text-yellow-300 mt-6 text-xl">
-            योग: कमसु कौशलम्
+            योगः कर्मसु कौशलम्
           </p>
         </div>
       </section>
