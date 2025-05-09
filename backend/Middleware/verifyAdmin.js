@@ -15,7 +15,7 @@ const verifyAdmin = async (req, res, next) => {
     const decoded = jwt.verify(token, hash);
 
     const { id: email, password } = decoded.user;
-
+    console.log("Envs and user feed value",email, password,admin_password,admin_username);
     if (email === admin_username && password === admin_password) {
       // Pass user info to next middleware or route
       req.admin = decoded.user;

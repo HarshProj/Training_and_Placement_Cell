@@ -16,7 +16,7 @@ const admin_password = process.env.admin_password;
 router.post("/adminlogin", async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("Envs and user feed value",email, password,admin_password,admin_username);
     if (admin_username === email && admin_password === password) {
       const data = {
         user: {
@@ -31,7 +31,7 @@ router.post("/adminlogin", async (req, res) => {
     } else {
       return res
         .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+        .json({ success: false, message: `Invalid credentials "Envs and user feed value",${email}, ${password},${admin_password},${admin_username}` });
     }
   } catch (error) {
     console.log(error);
