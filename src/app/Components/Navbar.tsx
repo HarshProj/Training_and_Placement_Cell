@@ -83,13 +83,10 @@ export const Navbar: React.FC = () => {
       label: "Students",
       val: true,
       subMenu: [
-        { label: "Student Corner", link: "/" },
-        { label: "Achievement", link: "/" },
         {
           label: "Registration Procedure and Code of Conduct",
           link: "/CodeOfConduct",
         },
-        { label: "Career Development", link: "/" },
         { label: "Activity", link: "/" },
       ],
     },
@@ -98,7 +95,7 @@ export const Navbar: React.FC = () => {
       val: true,
       subMenu: [
         { label: "Brochure", link: "/" },
-        { label: "Placement Procedure", link: "/" },
+        { label: "Placement Procedure", link: "/CodeOfConduct" },
         { label: "Past Recruiters", link: "/past_recruiters" },
         { label: "Recruiter Feedback", link: "/recruiters_feedback" },
       ],
@@ -117,9 +114,8 @@ export const Navbar: React.FC = () => {
       val: true,
       subMenu: [
         { label: "Contact Us", link: "/contact-us" },
-        { label: "Placement Team", link: "/" },
         { label: "Career Guidance Cell", link: "/" },
-        { label: "Members", link: "/" },
+        { label: "Members", link: "/placement-team" },
       ],
     },
     {

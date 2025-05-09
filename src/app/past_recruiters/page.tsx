@@ -22,7 +22,7 @@ const recruiters: Recruiter[] = [
     roles: ["System Engineer", "Associate System Engineer"],
     package: "3.5 - 9 LPA",
     candidatesHired: 69,
-    images: [ "/tcs/p2.jpg", "/tcs/p3.jpg"],
+    images: ["/tcs/p2.jpg", "/tcs/p3.jpg"],
   },
   {
     name: "Ittiam",
@@ -39,7 +39,7 @@ const recruiters: Recruiter[] = [
     logo: "/logos/adrosonic.png",
     website: "https://www.adrosonic.com",
     description: "Adrosonic is a technology consultancy specializing in digital transformation and automation.",
-    roles: ["Software Engineer" , "Assistant Software Engineer"],
+    roles: ["Software Engineer", "Assistant Software Engineer"],
     package: "4.5 - 6.5 LPA",
     candidatesHired: 10,
     images: ["/drive/adrosonic1.jpg", "/drive/adrosonic2.jpg"],
@@ -48,7 +48,7 @@ const recruiters: Recruiter[] = [
     name: "BEL",
     logo: "/logos/bel.jpg",
     website: "https://www.bel.com",
-    description: "Bharat Electronics Limited (BEL) is a leading Indian state-owned aerospace and defense company, manufacturing advanced electronic products for the Indian Armed Forces and beyond.",
+    description: "Bharat Electronics Limited (BEL) is a leading Indian state-owned aerospace and defense company.",
     roles: ["Deputy Engineer"],
     package: "12.5 LPA",
     candidatesHired: 6,
@@ -58,7 +58,7 @@ const recruiters: Recruiter[] = [
     name: "Academor",
     logo: "/logos/academor.jpg",
     website: "https://www.academor.com",
-    description: "Academor is a dynamic sales company specializing in educational products and services, connecting learners with the best resources to succeed.",
+    description: "Academor is a dynamic sales company specializing in educational products and services.",
     roles: ["Sales role"],
     package: "4 - 8 LPA",
     candidatesHired: 80,
@@ -68,7 +68,7 @@ const recruiters: Recruiter[] = [
     name: "Alt Digital",
     logo: "/logos/altdigital.jpg",
     website: "https://www.altdigital.com",
-    description: "Alt Digital is a leading digital solutions company, helping businesses transform their online presence through cutting-edge marketing and technology strategies.",
+    description: "Alt Digital helps businesses transform their online presence through tech and marketing.",
     roles: ["Software Engineer"],
     package: "4 - 8 LPA",
     candidatesHired: 5,
@@ -78,7 +78,7 @@ const recruiters: Recruiter[] = [
     name: "American Express",
     logo: "/logos/express.jpg",
     website: "https://www.american-express.com",
-    description: "American Express is a globally integrated payments company, providing customers with access to products, insights, and experiences that enrich lives and build business success.",
+    description: "American Express is a globally integrated payments company.",
     roles: ["Software Engineer"],
     package: "17.5 LPA",
     candidatesHired: 3,
@@ -88,8 +88,8 @@ const recruiters: Recruiter[] = [
     name: "Prolift",
     logo: "/logos/prolift.jpg",
     website: "https://www.american-express.com",
-    description: "Prolift is a globally integrated payments company, providing customers with access to products, insights, and experiences that enrich lives and build business success.",
-    roles: ["Software Engineer" , "Assistant Software Engineer"],
+    description: "Prolift is a globally integrated payments company.",
+    roles: ["Software Engineer", "Assistant Software Engineer"],
     package: "12 LPA",
     candidatesHired: 5,
     images: ["/prolift/p1.jpg", "/prolift/p2.jpg"],
@@ -100,94 +100,103 @@ const PastRecruiters = () => {
   const [selectedCompany, setSelectedCompany] = useState<Recruiter | null>(recruiters[0]);
 
   return (
-  <>
-    <Navbar />
-    <div className="flex min-h-screen bg-gradient-to-r from-blue-100 to-blue-200 pt-20">
-      {/* Sidebar */}
-      <aside className="w-1/4 bg-white shadow-xl p-6 overflow-y-auto max-h-screen">
-        <h2 className="text-2xl font-bold mb-6 text-blue-600">Past Recruiters</h2>
-        <ul className="space-y-3">
-          {recruiters.map((company) => (
-            <li
-              key={company.name}
-              className={`p-3 cursor-pointer rounded-lg transition-all ${
-                selectedCompany?.name === company.name
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-blue-100"
-              }`}
-              onClick={() => setSelectedCompany(company)}
-            >
-              {company.name}
-            </li>
-          ))}
-        </ul>
-      </aside>
+    <>
+      <Navbar />
+      <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-r from-blue-100 to-blue-200 pt-20">
+        {/* Sidebar */}
+        <aside className="w-full md:w-1/4 bg-white shadow-xl p-6 overflow-y-auto max-h-[50vh] md:max-h-screen md:sticky md:top-20 z-10">
+          <h2 className="text-2xl font-bold mb-6 text-blue-600">Past Recruiters</h2>
+          <ul className="space-y-3">
+            {recruiters.map((company) => (
+              <li
+                key={company.name}
+                className={`p-3 cursor-pointer rounded-lg transition-all text-sm md:text-base ${
+                  selectedCompany?.name === company.name
+                    ? "bg-blue-600 text-white"
+                    : "hover:bg-blue-100"
+                }`}
+                onClick={() => setSelectedCompany(company)}
+              >
+                {company.name}
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-      {/* Main Content with its own scrollbar */}
-      <main className="w-3/4 p-4 overflow-y-auto max-h-screen scrollbar-hidden">
-        {selectedCompany ? (
-          <>
-            {/* Company Info */}
-            <div className="bg-white p-8 rounded-lg shadow-xl">
-              <h1 className="text-4xl font-bold text-blue-700 mb-4">{selectedCompany.name}</h1>
-              <a href={selectedCompany.website} target="_blank" rel="noopener noreferrer">
-                <img
-                  src={selectedCompany.logo}
-                  alt={selectedCompany.name}
-                  className="w-40 my-6 mx-auto"
-                />
-              </a>
-              <p className="text-lg text-gray-700 mb-6">{selectedCompany.description}</p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Roles */}
-                <div className="bg-blue-50 p-4 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold text-blue-600 mb-3">Roles Available</h3>
-                  <ul className="space-y-2">
-                    {selectedCompany.roles.map((role, index) => (
-                      <li key={index} className="p-2 bg-blue-100 rounded-md text-blue-800">
-                        {role}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Package & Candidates */}
-                <div className="bg-green-50 p-4 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold text-green-600 mb-3">Hiring Details</h3>
-                  <p className="text-lg font-medium text-gray-800 mb-3">
-                    💰 Package: <span className="text-green-700">{selectedCompany.package}</span>
-                  </p>
-                  <p className="text-lg font-medium text-gray-800">
-                    👥 Candidates Hired:{" "}
-                    <span className="text-green-700">{selectedCompany.candidatesHired}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Drive Day Pictures */}
-            <div className="bg-white p-8 mt-8 rounded-lg shadow-xl">
-              <h3 className="text-2xl font-semibold text-purple-600 mb-4">📸 Drive Memories</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {selectedCompany.images.map((img, index) => (
+        {/* Main Content */}
+        <main className="w-full md:w-3/4 p-4 overflow-y-auto">
+          {selectedCompany ? (
+            <>
+              {/* Company Info */}
+              <div className="bg-white p-6 md:p-8 rounded-lg shadow-xl mb-8">
+                <h1 className="text-3xl md:text-4xl font-bold text-blue-700 mb-4">
+                  {selectedCompany.name}
+                </h1>
+                <a href={selectedCompany.website} target="_blank" rel="noopener noreferrer">
                   <img
-                    key={index}
-                    src={img}
-                    alt={`Drive day`}
-                    className="rounded-lg shadow-md hover:scale-105 transform transition duration-300 object-contain h-40 w-full"
+                    src={selectedCompany.logo}
+                    alt={selectedCompany.name}
+                    className="w-32 md:w-40 my-4 mx-auto"
                   />
-                ))}
-              </div>
-            </div>
-          </>
-        ) : (
-          <p className="text-gray-600">Select a company to see details</p>
-        )}
-      </main>
-    </div>
+                </a>
+                <p className="text-gray-700 text-sm md:text-base mb-6">
+                  {selectedCompany.description}
+                </p>
 
-    </> 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Roles */}
+                  <div className="bg-blue-50 p-4 rounded-lg shadow-sm">
+                    <h3 className="text-lg font-semibold text-blue-600 mb-3">Roles Available</h3>
+                    <ul className="space-y-2">
+                      {selectedCompany.roles.map((role, index) => (
+                        <li
+                          key={index}
+                          className="p-2 bg-blue-100 rounded-md text-blue-800 text-sm"
+                        >
+                          {role}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Package & Candidates */}
+                  <div className="bg-green-50 p-4 rounded-lg shadow-sm">
+                    <h3 className="text-lg font-semibold text-green-600 mb-3">Hiring Details</h3>
+                    <p className="text-base text-gray-800 mb-2">
+                      💰 Package:{" "}
+                      <span className="text-green-700">{selectedCompany.package}</span>
+                    </p>
+                    <p className="text-base text-gray-800">
+                      👥 Candidates Hired:{" "}
+                      <span className="text-green-700">{selectedCompany.candidatesHired}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Drive Images */}
+              {/* <div className="bg-white p-6 md:p-8 rounded-lg shadow-xl">
+                <h3 className="text-xl md:text-2xl font-semibold text-purple-600 mb-4">
+                  📸 Drive Memories
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {selectedCompany.images.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img}
+                      alt="Drive"
+                      className="rounded-lg shadow-md hover:scale-105 transform transition duration-300 object-cover h-40 w-full"
+                    />
+                  ))}
+                </div>
+              </div> */}
+            </>
+          ) : (
+            <p className="text-gray-600 text-center">Select a company to see details</p>
+          )}
+        </main>
+      </div>
+    </>
   );
 };
 
