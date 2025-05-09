@@ -9,8 +9,8 @@ const verifyuser = require("../Middleware/verifyuser");
 const localvariable = require("../Middleware/localvariable");
 
 const hash = process.env.hash;
-const admin_username = process.env.admin_username;
-const admin_password = process.env.admin_password;
+const admin_username = process.env.ADMIN_USERNAME;
+const admin_password = process.env.ADMIN_PASSWORD;
 
 // Login Route
 router.post("/adminlogin", async (req, res) => {
