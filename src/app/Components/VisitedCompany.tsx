@@ -15,10 +15,12 @@ const VisitedCompany = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/admin/getcompanies');
+        const res = await axios.get(`${URL}/api/admin/getcompanies`);
         const data = res.data.data;
 
         setCompanies(Array.isArray(data) ? data : []);
@@ -64,7 +66,7 @@ const VisitedCompany = () => {
               >
                 <div className="h-40 flex items-center justify-center bg-gradient-to-r from-blue-100 to-blue-200 rounded-t-2xl p-4">
                   <img
-                    src={`http://localhost:5000/images/${company.image}`}
+                    src={`${URL}/images/${company.image}`}
                     alt={company.name}
                     className="max-h-full object-contain"
                   />
