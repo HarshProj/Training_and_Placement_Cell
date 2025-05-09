@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios'
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function RecruiterAuth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,10 +14,12 @@ export default function RecruiterAuth() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    
     try {
-      const res = await axios.post<{ msg: string; authtoken: string; success:boolean }>('http://localhost:5000/api/auth/adminlogin', {email , password});
-  
+      const res = await axios.post<{ msg: string; authtoken: string; success: boolean }>(
+        `${URL}/api/auth/adminlogin`,
+        { email, password }
+      );
+
       if (res.data.success) {
         // alert('Login successful!');
         sessionStorage.setItem('authtoken', res.data.authtoken);

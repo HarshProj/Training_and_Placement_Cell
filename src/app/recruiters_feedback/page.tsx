@@ -20,6 +20,8 @@ interface ResponseData {
   message?: string;
 }
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function RecruiterFeedback() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -47,7 +49,7 @@ export default function RecruiterFeedback() {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/v1/recruiter/feedback', {
+      const response = await fetch(`${URL}/api/v1/recruiter/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

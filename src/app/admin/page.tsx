@@ -99,7 +99,7 @@ interface RecruiterFeedback {
 
 const AdminPage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  const URL=process.env.NEXT_PUBLIC_API_URL;
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<
     "add" | "list" | "orders" | "updates" | "feedback" | "directory"
@@ -146,7 +146,7 @@ const AdminPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/addcompany",
+        `${URL}/api/admin/addcompany`,
         formData
       );
 
@@ -207,6 +207,7 @@ const AdminPage = () => {
 
   const logout = () => {
     sessionStorage.removeItem("authtoken");
+    sessionStorage.clear();
     router.push("/recruiter_login");
   };
 
@@ -339,7 +340,7 @@ const AdminPage = () => {
         const token = sessionStorage.getItem("authtoken");
 
         const response = await axios.post(
-          "http://localhost:5000/api/admin/details",
+          `${URL}/api/admin/details`,
           {
             company: companyName,
             domain: domain,
@@ -858,7 +859,7 @@ const AdminPage = () => {
     try {
       const token = sessionStorage.getItem("authtoken");
       const response = await axios.get(
-        "http://localhost:5000/api/v1/recruiter/feedback",
+        `${URL}/api/v1/recruiter/feedback`,
         {
           headers: {
             Authtoken: token,
@@ -899,7 +900,7 @@ const AdminPage = () => {
   const fetchUpdates = async () => {
     try {
       const token = sessionStorage.getItem("authtoken");
-      const response = await axios.get("http://localhost:5000/api/v1/updates", {
+      const response = await axios.get(`${URL}/api/v1/updates`, {
         headers: {
           Authtoken: token,
         },
@@ -927,7 +928,7 @@ const AdminPage = () => {
       if (isEditing && editingUpdateId) {
         // Update existing update
         await axios.put(
-          `http://localhost:5000/api/v1/updates/${editingUpdateId}`,
+          `${URL}/api/v1/updates/${editingUpdateId}`,
           updateData,
           {
             headers: {
@@ -938,7 +939,7 @@ const AdminPage = () => {
       } else {
         // Create new update
         await axios.post(
-          "http://localhost:5000/api/v1/updates/create",
+          `${URL}/api/v1/updates/create`,
           updateData,
           {
             headers: {
@@ -961,7 +962,7 @@ const AdminPage = () => {
     if (window.confirm("Are you sure you want to delete this update?")) {
       try {
         const token = sessionStorage.getItem("authtoken");
-        await axios.delete(`http://localhost:5000/api/v1/updates/${id}`, {
+        await axios.delete(`${URL}/api/v1/updates/${id}`, {
           headers: {
             Authtoken: token,
           },
@@ -1008,7 +1009,7 @@ const AdminPage = () => {
 
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/auth/verifyadmin",
+          `${URL}/api/auth/verifyadmin`,
           {
             headers: {
               Authtoken: token,

@@ -14,7 +14,7 @@ const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({ isOpen, onClose }) => {
   const [chatHistory, setChatHistory] = useState<
     { question: string; answer: string; source: string }[]
   >([]);
-
+  const URL = process.env.NEXT_PUBLIC_API_URL;
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/gemini/chatbot', {
+      const res = await axios.post(`${URL}/api/gemini/chatbot`, {
         question: input,
       });
 

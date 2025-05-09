@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function StudentAuth() {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -24,12 +26,12 @@ export default function StudentAuth() {
       setIsLoading(true);
   
       // Step 1: Generate OTP
-      const otpRes = await axios.get(`http://localhost:5000/api/auth/generateotp?email=${email}`);
+      const otpRes = await axios.get(`${URL}/api/auth/generateotp?email=${email}`);
       if (otpRes.status === 200 && otpRes.data.code) {
         const otp = otpRes.data.code;
   
         // Step 2: Send email via /registermail
-        const mailRes = await axios.post(`http://localhost:5000/api/auth/registermail`, {
+        const mailRes = await axios.post(`${URL}/api/auth/registermail`, {
           username: email.split('@')[0],   // You can replace this with actual name input if available
           useremail: email,
           text: otp,
@@ -59,7 +61,7 @@ export default function StudentAuth() {
   // Step 2: Verify OTP
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/auth/verifyotp?code=${otp}&email=${email}`);
+      const res = await axios.get(`${URL}/api/auth/verifyotp?code=${otp}&email=${email}`);
       if (res.status === 201) {
         alert('OTP Verified!');
         setIsOtpVerified(true);
@@ -82,7 +84,7 @@ export default function StudentAuth() {
 
     try {
       const res = await axios.post<{ msg: string; authtoken: string; success: boolean }>(
-        'http://localhost:5000/api/auth/login',
+        `${URL}/api/auth/login`,
         { email }
       );
       if (res.data.success) {

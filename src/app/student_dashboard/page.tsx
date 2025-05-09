@@ -13,6 +13,8 @@ interface Update {
   updatedAt: string;
 }
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function StudentDashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [updates, setUpdates] = useState<Update[]>([]);
@@ -32,7 +34,7 @@ export default function StudentDashboard() {
 
       try {
         // Fetch updates
-        const updatesRes = await axios.get('http://localhost:5000/api/v1/updates', {
+        const updatesRes = await axios.get(`${URL}/api/v1/updates`, {
           headers: {
             Authtoken: token
           }
@@ -44,7 +46,7 @@ export default function StudentDashboard() {
         }
 
         // You can add an endpoint to fetch student info if available
-        // const studentRes = await axios.get('http://localhost:5000/api/auth/student', {
+        // const studentRes = await axios.get(`${URL}/api/auth/student`, {
         //   headers: {
         //     Authtoken: token
         //   }
